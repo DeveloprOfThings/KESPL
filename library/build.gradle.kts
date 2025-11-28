@@ -128,6 +128,12 @@ tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMet
     dependsOn("kspCommonMainKotlinMetadata")
 }
 
+tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").configure {
+    // Explicitly make sourcesJar depend on the KSP metadata task.
+    // This solves the "implicit dependency" error.
+    dependsOn("kspCommonMainKotlinMetadata")
+}
+
 ksp {
     arg("KOIN_DEFAULT_MODULE","false")
 }
