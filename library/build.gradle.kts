@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     id("dev.mokkery") version "2.10.2"
+    alias(libs.plugins.vanniktech.mavenPublish)
 }
 
 mokkery {
@@ -133,4 +134,38 @@ ksp {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+
+    signAllPublications()
+
+    coordinates("io.github.developrofthings", "kespl", "0.9.0")
+
+    pom {
+        name = "KESPL"
+        description = "A Kotlin Extended Serial Protocol Library"
+        inceptionYear = "2025"
+        url = "https://github.com/DeveloprOfThings/KESPL"
+        licenses {
+            license {
+                name = "MIT"
+                url = "https://opensource.org/license/MIT"
+                distribution = "https://opensource.org/license/MIT"
+            }
+        }
+        developers {
+            developer {
+                id = "DeveloprOfThings"
+                name = "Developr Of Things"
+                url = "https://github.com/DeveloprOfThings"
+            }
+        }
+        scm {
+            url = "https://github.com/DeveloprOfThings/KESPL"
+            connection = "scm:git:https://github.com/DeveloprOfThings/KESPL.git"
+            developerConnection = "scm:git:https://github.com/DeveloprOfThings/KESPL.git"
+        }
+    }
 }

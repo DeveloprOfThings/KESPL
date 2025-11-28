@@ -37,6 +37,7 @@ androidxCore = "1.7.0"
 composeMultiplatform = "1.9.3"
 androidx-lifecycle = "2.9.6"
 adaptive = "1.2.0"
+vanniktechMavenPublish = "0.34.0"
 
 [libraries]
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
@@ -87,3 +88,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
+vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
