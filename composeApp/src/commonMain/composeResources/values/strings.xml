@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="remote_display">Remote Display</string>
+    <string name="remote_audio">Remote Audio</string>
+    <string name="savvy">SAVVY</string>
+    <string name="third_party_1">Third Party 1 (0x03)</string>
+    <string name="third_party_2">Third Party 2 (0x04)</string>
+    <string name="third_party_3">Third Party 3 (0x05)</string>
+    <string name="v1connection">V1connection</string>
+    <string name="reserved">VRI Reserved (0x07)</string>
+    <string name="general_broadcast">General Broadcast</string>
+    <string name="valentine_one_check">V1 w/ Checksum</string>
+    <string name="valentine_one_no_check">V1 w/o Checksum</string>
+    <string name="valentine_one_legacy">V1 LEGACY</string>
+    <string name="unknown">Unknown (0x99)</string>
+    <string name="custom">Custom ESP Device</string>
+    <string name="version">Version</string>
+    <string name="serial">Serial</string>
+    <string name="at_on">AT ON</string>
+    <string name="at_off">AT Off</string>
+    <string name="sweep_info">Sweep Info</string>
+    <string name="user_bytes">User Bytes:</string>
+    <string name="read">Read</string>
+    <string name="write">Write</string>
+    <string name="gui">GUI</string>
+    <string name="clear_esp_log">Clear ESP Log</string>
+    <string name="view_esp_log">View ESP Log</string>
+    <string name="close_esp_log">Close ESP Log</string>
+    <string name="esp_log_cnt">ESP Log (%1$d):</string>
+    <string name="esp_log_plus">ESP Log (10K+):</string>
+    <string name="mhz">%1$d Mhz</string>
+    <string name="index">Index</string>
+    <string name="lower">Lower</string>
+    <string name="upper">Upper</string>
+    <string name="read_cur_sweeps">Read Cur Sweeps</string>
+    <string name="write_sweeps">Write Sweeps</string>
+    <string name="read_def_sweeps">Read Def Sweeps</string>
+    <string name="restore_sweeps">Restore Sweeps</string>
+    <string name="sweep_definitions">Sweep Definitions:</string>
+    <string name="default_sweep_definitions">Default Sweep Definition:</string>
+    <string name="current_sweep_definitions">Current Sweep Definitions:</string>
+    <string name="sweep_sections">Sweep Sections:</string>
+    <string name="idx_cnt">Idx/Cnt</string>
+    <string name="sweep_data">Sweep Data</string>
+    <string name="max_sweep_index">Max Sweep Index:</string>
+    <string name="_default">Default</string>
+    <string name="read_default_sweeps">Read Default Sweeps</string>
+    <string name="filter_alrt">Filter Alrt.</string>
+    <string name="alert">Alert</string>
+    <string name="filter_disp">Filter Disp.</string>
+    <string name="inf_display">Inf. Display</string>
+    <string name="auto_scroll">Auto scroll</string>
+    <string name="scroll">Scroll 🔻</string>
+    <string name="request">Request</string>
+    <string name="missing_required_permission">Missing Required Permission</string>
+    <string name="bt_perm_rationale">The Bluetooth and Location permissions are required to discover and connect to V1c devices</string>
+    <string name="euro">Euro: %1$s</string>
+    <string name="legacy">Legacy: %1$s</string>
+    <string name="soft">Soft: %1$s</string>
+    <string name="custom_sweeps">CS: %1$s</string>
+    <string name="time_slicing">TSlicing: %1$s</string>
+    <string name="searching_for_alerts">Searching: %1$s</string>
+    <string name="scan_for_v1connection_s">Scan for V1connection(s)</string>
+    <string name="no_device_selected">No Device Selected</string>
+    <string name="restore_defaults">Restore Defaults</string>
+    <string name="display_on">Display On</string>
+    <string name="display_off">Display Off</string>
+    <string name="unmute_v1">Unmute V1</string>
+    <string name="mute_v1">Mute V1</string>
+    <string name="mode">Mode</string>
+    <string name="write_volume">Write Volume</string>
+    <string name="main_volume">Main Volume:</string>
+    <string name="mute_volume">Mute Volume:</string>
+    <string name="current_volume">Current Volume</string>
+    <string name="saved_volume">Saved Volume</string>
+    <string name="read_volume">Read Volume</string>
+    <string name="all_volumes">All Volumes</string>
+    <string name="display_current_volume">Display Volume</string>
+    <string name="abort_audio_delay">Abort Aud. Delay</string>
+    <string name="user_feedback">User Feedback</string>
+    <string name="skip_feedback_if_no_volume_change">Skip Feedback If No Volume Change</string>
+    <string name="live_update_v1_volume">Live Update V1 Volume</string>
+    <string name="mph">MPH</string>
+    <string name="kph">KPH</string>
+    <string name="override_thumbwheel">Override Thumbwheel</string>
+    <string name="toggle">Toggle %1$s</string>
+    <string name="disable_unmute">Disable Unmute</string>
+    <string name="enable_unmute">Enable Unmute</string>
+    <string name="request_savvy_status">Request SAVVY Status</string>
+    <string name="valentine_1">Valentine 1</string>
+    <string name="general">General</string>
+    <string name="battery_voltage">Battery Voltage</string>
+    <string name="display_mirror">Display Mirror</string>
+    <string name="laser">Laser</string>
+    <string name="laser_abrv">L</string>
+    <string name="ka_band">Ka</string>
+    <string name="k_band">K</string>
+    <string name="x_band">X</string>
+    <string name="ku_band">Ku</string>
+    <string name="strength">Strength</string>
+    <string name="save_volume">Save Volume</string>
+    <string name="volume_controls">Volume Controls</string>
+    <string name="write_to_v1">Write To V1</string>
+    <string name="missing_req_permissions">Missing required permission</string>
+    <string name="grant">Grant</string>
+    <string name="scan_for_v1c">Scan for V1c</string>
+    <string name="discover_v1connections">Discover V1connection(s)</string>
+    <string name="select_scan_type">Select %1$s</string>
+    <string name="read_sweep_sections">Read Sweep Sections</string>
+
+    <string name="controls">Controls</string>
+    <string name="esp_log">ESP Log</string>
+
+    <string-array name="v1_logic_modes">
+        <item>All Bogey</item>
+        <item>Logic</item>
+        <item>Adv.Logic</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="gen1_user_byte_0">
+        <item>X Band</item>
+        <item>K Band</item>
+        <item>Ka Band</item>
+        <item>Laser Band</item>
+        <item>Bar graph (Normal/Responsive)</item>
+        <item>Ka False Guard</item>
+        <item>Feature b-G(K Muting)</item>
+        <item>Mute Volume Lever/Zero</item>
+    </string-array>
+
+    <string-array name="gen1_user_byte_1">
+        <item>Post-Mute Bogey Lock Volume</item>
+        <item>K Mute Timer Bit 1</item>
+        <item>K Mute Timer Bit 2</item>
+        <item>K Mute Timer Bit 3</item>
+        <item>K Initial Unmute 4 lights</item>
+        <item>K Persistence Unmute 6 lights</item>
+        <item>K Rear Mute</item>
+        <item>Ku Band</item>
+    </string-array>
+
+    <string-array name="gen1_user_byte_2">
+        <item>Pop</item>
+        <item>Euro</item>
+        <item>Euro X</item>
+        <item>Filter</item>
+        <item>Force Legacy CD</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+    </string-array>
+
+    <string-array name="gen2_user_byte_0">
+        <item>X Band</item>
+        <item>K Band</item>
+        <item>Ka Band</item>
+        <item>Laser Band</item>
+        <item>Mute to Muted</item>
+        <item>Bogey-Lock Loud after muting</item>
+        <item>X and K Rear Mute in Logic or Advanced Logic Mode</item>
+        <item>Ku band</item>
+    </string-array>
+
+    <string-array name="gen2_user_byte_1">
+        <item>Euro</item>
+        <item>K-Verifier</item>
+        <item>Rear Laser</item>
+        <item>Custom Frequencies</item>
+        <item>Ka Always Radar Priority</item>
+        <item>Fast Laser Detection</item>
+        <item>Ka Sensitivity Bit 0</item>
+        <item>Ka Sensitivity Bit 1</item>
+    </string-array>
+
+    <string-array name="gen2_user_byte_2">
+        <item>Startup Sequence</item>
+        <item>Resting Display</item>
+        <item>BSM Plus</item>
+        <item>Auto Mute Bit 0</item>
+        <item>Auto Mute Bit 1</item>
+        <item>K Sensitivity Bit 0</item>
+        <item>K Sensitivity Bit 1</item>
+        <item>MRCT Photo Radar</item>
+    </string-array>
+
+    <string-array name="gen2_user_byte_3">
+        <item>X Sensitivity Bit 0</item>
+        <item>X Sensitivity Bit 1</item>
+        <item>DriveSafe 3D Photo Radar</item>
+        <item>DriveSafe 3DHD Photo Radar</item>
+        <item>Redflex Halo Photo Radar</item>
+        <item>Redflex NK7 Photo Radar</item>
+        <item>Ekin Photo Radar</item>
+        <item>Photo Verifier</item>
+    </string-array>
+
+    <string-array name="user_byte_undefined">
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+        <item>Undefined</item>
+    </string-array>
+</resources>
