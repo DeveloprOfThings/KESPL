@@ -28,10 +28,18 @@ community.
 <img src="/artwork/ipad_demo.gif" width="75%" height="75%"/>
 
 ## 🚀 Getting Started (Installation)
-**KESPL** is not yet published to Maven Central. To use it in your project today, clone the repository 
-and include the **KESPL** module as a local dependency in your project's `settings.gradle.kts`.
-
-**Future Access:** When published, dependency coordinates will be provided here.
+```Kotlin
+kotlin {
+    // ... other configurations
+    sourceSets {
+        // ... other source sets ie Android, iOS 
+        commonMain.dependencies {
+            // ... Other common source dependencies
+            implementation("io.github.developrofthings:kespl:0.9.0")
+        }
+    }
+}
+```
 
 ## ⚙️ Quick Usage - Android Example
 Before using **KESPL**, the library must be initialized via a call to `IESPClient.init(ESPContext)`, 
