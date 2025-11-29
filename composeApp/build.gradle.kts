@@ -23,7 +23,8 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            export(projects.library)
+            // Exposes KESPL library to Objective-C/Swift code
+            export("io.github.developrofthings:kespl:0.9.0")
             baseName = xcfName
             isStatic = true
         }
@@ -54,8 +55,8 @@ kotlin {
 
             // JSON
             implementation(libs.kotlinx.serialization.json)
-            // Add KMP dependencies here
-            api(projects.library)
+            // Add KESPL dependency
+            api("io.github.developrofthings:kespl:0.9.0")
 
             // Koin core
             implementation(libs.koin.core)
