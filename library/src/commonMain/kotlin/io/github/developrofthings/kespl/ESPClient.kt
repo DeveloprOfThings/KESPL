@@ -97,7 +97,7 @@ internal class ESPClient(
 
     override val v1CapabilityInfo: StateFlow<V1CapabilityInfo> = flowController
         .v1Version
-        .map(::determineCapabilities)
+        .map(::V1CapabilityInfo)
         .stateIn(
             scope = scope,
             initialValue = V1CapabilityInfo.DEFAULT,

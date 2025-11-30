@@ -1,7 +1,7 @@
 package io.github.developrofthings.helloV1.ui.dialog.user
 
 import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepository
-import io.github.developrofthings.helloV1.service.ESPService
+import io.github.developrofthings.helloV1.service.IESPService
 import io.github.developrofthings.kespl.ESPDevice
 import io.github.developrofthings.kespl.ESPResponse
 import io.github.developrofthings.kespl.packet.data.user.defaultUserBytes
@@ -18,7 +18,7 @@ class UserBytesGuiPresenter(
     userBytes: ByteArray,
     val targetDevice: ESPDevice,
     private val scope: CoroutineScope,
-    private val espService: ESPService,
+    private val espService: IESPService,
     private val espDataLogRepository: ESPDataLogRepository,
 ) {
     private val _userBytes = espService

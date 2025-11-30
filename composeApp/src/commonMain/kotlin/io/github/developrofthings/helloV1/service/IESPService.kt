@@ -99,7 +99,7 @@ interface IESPService {
     suspend fun requestWriteV1Volume(
         main: Int,
         mute: Int,
-        provideUserFeedBack: Boolean,
+        provideUserFeedback: Boolean,
         skipFeedBackWhenNoChange: Boolean,
         saveVolume: Boolean,
     ): ESPResponse<Unit, ESPFailure>

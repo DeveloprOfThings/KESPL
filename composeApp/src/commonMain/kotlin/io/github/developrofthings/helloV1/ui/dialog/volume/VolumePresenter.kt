@@ -2,7 +2,7 @@ package io.github.developrofthings.helloV1.ui.dialog.volume
 
 import io.github.developrofthings.helloV1.combine
 import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepository
-import io.github.developrofthings.helloV1.service.ESPService
+import io.github.developrofthings.helloV1.service.IESPService
 import io.github.developrofthings.kespl.V1CapabilityInfo
 import io.github.developrofthings.kespl.onFailure
 import io.github.developrofthings.kespl.packet.data.V1Volume
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class VolumePresenter(
     private val scope: CoroutineScope,
-    private val espService: ESPService,
+    private val espService: IESPService,
     private val espDataLogRepository: ESPDataLogRepository,
 ) {
 
