@@ -1,7 +1,7 @@
 package io.github.developrofthings.helloV1.ui.dialog.sweep
 
 import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepository
-import io.github.developrofthings.helloV1.service.ESPService
+import io.github.developrofthings.helloV1.service.IESPService
 import io.github.developrofthings.helloV1.ui.component.SweepDefinitionsColumnState
 import io.github.developrofthings.helloV1.ui.component.SweepSectionColumnState
 import io.github.developrofthings.kespl.ESPPacketId
@@ -37,7 +37,7 @@ import kotlin.experimental.or
 @Factory
 class SweepInfoPresenter(
     private val scope: CoroutineScope,
-    private val espService: ESPService,
+    private val espService: IESPService,
     private val espDataLogRepository: ESPDataLogRepository,
 ) {
     private val sweepSections = MutableStateFlow<List<SweepSection>>(emptyList())

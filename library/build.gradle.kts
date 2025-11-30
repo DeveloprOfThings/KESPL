@@ -147,7 +147,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.developrofthings", "kespl", "0.9.0")
+    coordinates("io.github.developrofthings", "kespl", "0.9.1")
 
     pom {
         name = "KESPL"

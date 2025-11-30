@@ -99,6 +99,22 @@ class ExampleViewModel: ViewModel() {
 > the suspending API usage within viewModelScope.launch is identical across all Kotlin Multiplatform 
 > targets._
 
+### V1 Capabilities
+To determine capabilities/features of the attached Valentine One, developers can use the 
+`IESPClient.v1CapabilityInfo` state flow which contains the most recently "calculated" 
+`V1CapabilityInfo`. This class is made up of `Boolean` flags that are set based on firmware version 
+of a Valentine One. **KESPL** automatically requests & caches (`StateFlow`) the V1 firmware on 
+connect. 
+
+The following example can be used to determine if the attached Valentine One is a "Gen2":
+```Kotlin
+    espClient
+        .v1CapabilityInfo
+        .map { it.isGen2 }
+```
+"Collecting" from this flow is the recommended way for conditionally enabling/disabling app 
+features/UI. 
+
 ### 📦 ESPPacket
 All communication on the ESP bus is achieved through 
 [ESPPacket](library/src/commonMain/kotlin/com/esp/library/packet/ESPPacket.kt). `ESPPacket` is a 
@@ -271,6 +287,11 @@ that doesn't timeout. This is ideal for background re/connections.
 ## √ ESP Specification
 **KESPL** is based on **v.3.015** of the ESP Specification which can be found on the official Github 
 repo for [AndroidESPLibrary2](https://github.com/ValentineResearch/AndroidESPLibrary2/tree/master/Specification).
+
+## Stability
+The library is currently in beta but the API shape is considered **stable**. I hope for the library 
+to reach **v.1.0.0** before the end of 2025. Developers are encouraged to play with the library and 
+provide feedback on ease-of-use and correct behavior.
 
 ## ⚖️ License
 
