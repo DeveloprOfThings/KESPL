@@ -22,7 +22,7 @@ development by a joint collaboration of [Jetbrains](https://www.jetbrains.com/) 
 community.
 
 ### Pixel 7 Pro
-<img src="/artwork/pixel7pro_demogif.gif" width="35%" height="35%"/>
+<img src="/artwork/pixel7pro_demo.gif" width="35%" height="35%"/>
 
 ### iPad
 <img src="/artwork/ipad_demo.gif" width="75%" height="75%"/>
