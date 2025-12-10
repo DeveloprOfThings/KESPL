@@ -16,14 +16,14 @@ internal class IOSLeServiceWrapper(
     private val service: CBService,
     private val isConnected: suspend () -> Boolean,
     private val logger: PlatformLogger,
-    private val cbEvents: SharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent>,
+    private val cbEvents: SharedFlow<ESPCoreBluetoothEvent>,
     private val mutex: Mutex,
 ): PlatformLeServiceWrapper {
 
     override val uuid: Uuid get() = Uuid.parse(uuidString = service.UUID.UUIDString)
 
     override val characteristics: List<PlatformLeCharacteristicWrapper> = service.characteristics?.map {
-        _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.IOSLeCharacteristicWrapper(
+        IOSLeCharacteristicWrapper(
             peripheral = peripheral,
             characteristic = it as CBCharacteristic,
             isConnected = isConnected,

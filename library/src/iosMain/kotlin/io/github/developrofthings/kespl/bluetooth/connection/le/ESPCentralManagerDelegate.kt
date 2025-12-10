@@ -22,19 +22,19 @@ import platform.darwin.NSObject
 
 internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateProtocol {
 
-    private val _managerState: MutableStateFlow<io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState> = MutableStateFlow(
+    private val _managerState: MutableStateFlow<IOSCentralManagerState> = MutableStateFlow(
         // Initialize to the unknown... this is the initial value of the CBCentralManager.state
-        value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Unknown
+        value = IOSCentralManagerState.Unknown
     )
 
-    val managerState: StateFlow<io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState> = _managerState.asStateFlow()
+    val managerState: StateFlow<IOSCentralManagerState> = _managerState.asStateFlow()
 
-    private val _events: MutableSharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent> = MutableSharedFlow(
+    private val _events: MutableSharedFlow<ESPCoreBluetoothEvent> = MutableSharedFlow(
         extraBufferCapacity = 64,
         onBufferOverflow = BufferOverflow.SUSPEND,
     )
 
-    val events: SharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent> get() = _events.asSharedFlow()
+    val events: SharedFlow<ESPCoreBluetoothEvent> get() = _events.asSharedFlow()
 
     override fun centralManager(
         central: CBCentralManager,
@@ -43,7 +43,7 @@ internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateP
         RSSI: NSNumber
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerDiscoveryEvent(
+            value = CentralManagerDiscoveryEvent(
                 peripheral = didDiscoverPeripheral,
                 rssi = RSSI.intValue,
             )
@@ -55,7 +55,7 @@ internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateP
         didConnectPeripheral: CBPeripheral
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent(
+            value = CentralManagerConnectionEvent(
                 peripheral = didConnectPeripheral,
                 status = ESPConnectionStatus.Connected,
             )
@@ -69,7 +69,7 @@ internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateP
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent(
+            value = CentralManagerConnectionEvent(
                 peripheral = didDisconnectPeripheral,
                 status = ESPConnectionStatus.Disconnected,
             )
@@ -83,7 +83,7 @@ internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateP
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent(
+            value = CentralManagerConnectionEvent(
                 peripheral = didFailToConnectPeripheral,
                 status = ESPConnectionStatus.ConnectionFailed,
             )
@@ -92,19 +92,19 @@ internal class ESPCentralManagerDelegate : NSObject(), CBCentralManagerDelegateP
 
     override fun centralManagerDidUpdateState(central: CBCentralManager) {
         _managerState.value =
-            _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Companion.fromCBManagerStateLong(value = central.state)
+            IOSCentralManagerState.Companion.fromCBManagerStateLong(value = central.state)
     }
 }
 
 class CentralManagerDiscoveryEvent(
     override val peripheral: CBPeripheral,
     val rssi: Int,
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent
+) : ESPCoreBluetoothEvent
 
 class CentralManagerConnectionEvent(
     override val peripheral: CBPeripheral,
     val status: ESPConnectionStatus,
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent {
+) : ESPCoreBluetoothEvent {
     val isDisconnected
         get() =
             status != ESPConnectionStatus.Connected &&
@@ -112,15 +112,15 @@ class CentralManagerConnectionEvent(
                     (status != ESPConnectionStatus.Disconnecting)
 }
 
-fun io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent.isConnectionInterrupted(
+fun ESPCoreBluetoothEvent.isConnectionInterrupted(
     peripheral: CBPeripheral,
 ): Boolean = if (this.peripheral.identifier == peripheral.identifier() &&
-    this is io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent
+    this is CentralManagerConnectionEvent
 ) this.isDisconnected
 else false
 
 @Suppress("UNCHECKED_CAST")
-internal inline fun <reified TEvent : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent> Flow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent>.filterForPeripheral(
+internal inline fun <reified TEvent : ESPCoreBluetoothEvent> Flow<ESPCoreBluetoothEvent>.filterForPeripheral(
     peripheral: CBPeripheral,
 ): Flow<TEvent> =
     this
@@ -128,7 +128,7 @@ internal inline fun <reified TEvent : io.github.developrofthings.kespl.bluetooth
             as Flow<TEvent>
 
 @Suppress("UNCHECKED_CAST")
-internal inline fun <reified TEvent : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCBCharacteristicEvent> Flow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent>.filterForCharacteristic(
+internal inline fun <reified TEvent : ESPCBCharacteristicEvent> Flow<ESPCoreBluetoothEvent>.filterForCharacteristic(
     characteristic: CBCharacteristic,
 ): Flow<TEvent> =
     this

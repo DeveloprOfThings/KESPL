@@ -30,7 +30,7 @@ import kotlin.uuid.ExperimentalUuidApi
 @Named(V1C_LE_SCANNER_QUALIFER)
 @OptIn(ExperimentalUuidApi::class)
 internal class IOSLEV1cScanner(
-    private val bluetoothManager: io.github.developrofthings.kespl.bluetooth.IOSBluetoothManager,
+    private val bluetoothManager: IOSBluetoothManager,
 ) : IV1cScanner {
     private val _cbCentralManager = bluetoothManager.cbCentralManager
     private val _centralManagerDelegate = bluetoothManager.delegate
@@ -41,7 +41,7 @@ internal class IOSLEV1cScanner(
     override fun startScan(scanMode: ESPScanMode): Flow<V1connectionScanResult> =
         _centralManagerDelegate
             .events
-            .filterIsInstance<io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerDiscoveryEvent>()
+            .filterIsInstance<CentralManagerDiscoveryEvent>()
             .map { it.toScanResult() }
             .onStart {
                 _cbCentralManager.startScan()
@@ -52,14 +52,14 @@ internal class IOSLEV1cScanner(
             }
 }
 
-private fun io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerDiscoveryEvent.toScanResult(): V1connectionScanResult =
+private fun CentralManagerDiscoveryEvent.toScanResult(): V1connectionScanResult =
     V1connectionScanResult(
         rssi = this.rssi,
         device = peripheral.toV1connection()
     )
 
 private fun CBPeripheral.toV1connection(): V1connection = V1connection.Remote(
-    device = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.BTDevice(realDevice = this),
+    device = BTDevice(realDevice = this),
     type = V1cType.LE,
 )
 

@@ -16,7 +16,7 @@ enum class IOSCentralManagerState(val value: Long) {
     Unsupported(value = CBManagerStateUnsupported);
 
     companion object {
-        fun fromCBManagerStateLong(value: Long): io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState = when (value) {
+        fun fromCBManagerStateLong(value: Long): IOSCentralManagerState = when (value) {
             PoweredOff.value -> PoweredOff
             PoweredOn.value -> PoweredOn
             Resetting.value -> Resetting

@@ -12,7 +12,7 @@ class ReadRemoteRssiException :
 
 class CharacteristicWriteException : ESPLeException()
 
-class UnknownException(operation: io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation) :
+class UnknownException(operation: CoreBluetoothOperation) :
     ESPLeException("An error occurred while performing operation: $operation")
 
 class FailedToDiscoverServices : ESPLeException()
