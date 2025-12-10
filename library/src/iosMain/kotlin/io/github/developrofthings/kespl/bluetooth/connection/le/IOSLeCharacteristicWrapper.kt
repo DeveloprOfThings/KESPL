@@ -35,18 +35,18 @@ internal class IOSLeCharacteristicWrapper(
     private val characteristic: CBCharacteristic,
     private val isConnected: suspend () -> Boolean,
     private val logger: PlatformLogger,
-    private val cbEvents: SharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent>,
+    private val cbEvents: SharedFlow<ESPCoreBluetoothEvent>,
     private val mutex: Mutex,
 ) : PlatformLeCharacteristicWrapper {
     override val uuid: Uuid get() = Uuid.parse(uuidString = characteristic.UUID.UUIDString)
 
     override suspend fun notifications(): Flow<ByteArray> {
-        if (!isConnected()) return flow { throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralNotConnectedException() }
+        if (!isConnected()) return flow { throw PeripheralNotConnectedException() }
 
         return cbEvents
             .onSubscription { enableNotifications(enable = true) }
             .takeWhile { !it.isConnectionInterrupted(peripheral) }
-            .filterForCharacteristic<io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateValue>(characteristic)
+            .filterForCharacteristic<CharacteristicDidUpdateValue>(characteristic)
             .map { it.value }
     }
 
@@ -83,18 +83,18 @@ internal class IOSLeCharacteristicWrapper(
                     )
                 }
                 .takeWhile { !it.isConnectionInterrupted(peripheral) }
-                .filterForCharacteristic<io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateNotificationState>(characteristic)
+                .filterForCharacteristic<CharacteristicDidUpdateNotificationState>(characteristic)
                 .firstOrNull()?.let { event ->
                     // If we failed to change notifications throw an Exception we are in a bad state
                     if (!event.isSuccessful() || event.enabled != enable) {
-                        throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.EnableNotificationsException(
+                        throw EnableNotificationsException(
                             enable = enable,
                             uuid = uuid
                         )
                     }
                 }
-                ?: throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.UnknownException(
-                    operation = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation.CharacteristicNotifications
+                ?: throw UnknownException(
+                    operation = CoreBluetoothOperation.CharacteristicNotifications
                 )
         }
     }
@@ -108,7 +108,7 @@ internal class IOSLeCharacteristicWrapper(
                     |there is no connection established."""
                     .trimMargin()
             )
-            throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralNotConnectedException()
+            throw PeripheralNotConnectedException()
         }
 
         mutex.withLock {
@@ -122,7 +122,7 @@ internal class IOSLeCharacteristicWrapper(
                 }
                 .takeWhile { !it.isConnectionInterrupted(peripheral = peripheral) }
                 .filterForCharacteristicWriteResponse()
-                .timeout(_root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.writeTimeout)
+                .timeout(writeTimeout)
                 .catch { exception ->
                     // If we have timed out we emit an artificial (false).. this can happen because
                     // iOS's CoreBluetooth API doesn't provide a reliable characteristic write
@@ -136,24 +136,24 @@ internal class IOSLeCharacteristicWrapper(
                     // If the write wasn't successfully treat this exceptionally since the library
                     // doesn't currently have a retry mechanism and the assumption this would only
                     // happen do to programmer error
-                    if (!successful) throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicWriteException()
-                } ?: throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.UnknownException(
-                operation = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation.CharacteristicWrite
+                    if (!successful) throw CharacteristicWriteException()
+                } ?: throw UnknownException(
+                operation = CoreBluetoothOperation.CharacteristicWrite
             )
         }
     }
 }
 
-private fun Flow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent>.filterForCharacteristicWriteResponse(): Flow<Boolean> =
-    filter { (it is io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateValue) or (it is io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralIsReadyToSend) }
+private fun Flow<ESPCoreBluetoothEvent>.filterForCharacteristicWriteResponse(): Flow<Boolean> =
+    filter { (it is CharacteristicDidUpdateValue) or (it is PeripheralIsReadyToSend) }
         .map {
             // All Bluetooth writes use the `CBCharacteristicWriteWithoutResponse` write type so we
             // will not get a call to the `peripheral:didWriteValueForCharacteristic` so the only
             // way we can "confirm" characteristic writes is by waiting for a call to
             // `peripheralIsReadyToSendWriteWithoutResponse`... It is assumed characteristic write
             // errors will call `peripheral:didWriteValueForCharacteristic`.
-            if (it is io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralIsReadyToSend) true
-            else (it as io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateValue).isSuccessful()
+            if (it is PeripheralIsReadyToSend) true
+            else (it as CharacteristicDidUpdateValue).isSuccessful()
         }
 
 private val writeTimeout: Duration = 3000.milliseconds

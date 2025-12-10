@@ -16,12 +16,12 @@ import toByteArray
 
 internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDelegateProtocol {
 
-    private val _events: MutableSharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent> = MutableSharedFlow(
+    private val _events: MutableSharedFlow<ESPCoreBluetoothEvent> = MutableSharedFlow(
         extraBufferCapacity = 64,
         onBufferOverflow = BufferOverflow.SUSPEND,
     )
 
-    val events: SharedFlow<io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent> get() = _events.asSharedFlow()
+    val events: SharedFlow<ESPCoreBluetoothEvent> get() = _events.asSharedFlow()
 
     override fun peripheral(
         peripheral: CBPeripheral,
@@ -29,7 +29,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ReadRemoteRssiEvent(
+            value = ReadRemoteRssiEvent(
                 peripheral = peripheral,
                 rssi = didReadRSSI.intValue,
                 error = error,
@@ -44,7 +44,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
 
         @Suppress("UNCHECKED_CAST")
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ServicesDiscoveredEvent(
+            value = ServicesDiscoveredEvent(
                 peripheral = peripheral,
                 services = didDiscoverServices?.let { emptyList() }
                     ?: peripheral.services?.map { it as CBService } ?: emptyList(),
@@ -59,7 +59,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ServiceCharacteristicsDiscoveredEvent(
+            value = ServiceCharacteristicsDiscoveredEvent(
                 peripheral = peripheral,
                 service = didDiscoverCharacteristicsForService,
                 error = error,
@@ -69,7 +69,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
 
     override fun peripheralIsReadyToSendWriteWithoutResponse(peripheral: CBPeripheral) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralIsReadyToSend(
+            value = PeripheralIsReadyToSend(
                 peripheral = peripheral,
             )
         )
@@ -82,7 +82,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidWriteValue(
+            value = CharacteristicDidWriteValue(
                 peripheral = peripheral,
                 characteristic = didWriteValueForCharacteristic,
                 error = error,
@@ -97,7 +97,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateNotificationState(
+            value = CharacteristicDidUpdateNotificationState(
                 peripheral = peripheral,
                 characteristic = didUpdateNotificationStateForCharacteristic,
                 enabled = didUpdateNotificationStateForCharacteristic.isNotifying,
@@ -113,7 +113,7 @@ internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDele
         error: NSError?
     ) {
         _events.tryEmit(
-            value = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CharacteristicDidUpdateValue(
+            value = CharacteristicDidUpdateValue(
                 peripheral = peripheral,
                 characteristic = didUpdateValueForCharacteristic,
                 value = didUpdateValueForCharacteristic.value?.toByteArray() ?: byteArrayOf(),
@@ -127,7 +127,7 @@ class ReadRemoteRssiEvent(
     override val peripheral: CBPeripheral,
     val rssi: Int,
     val error: NSError?
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent {
+) : ESPCoreBluetoothEvent {
     fun isSuccessful(): Boolean = error == null
 }
 
@@ -135,7 +135,7 @@ class ServicesDiscoveredEvent(
     override val peripheral: CBPeripheral,
     val services: List<CBService>,
     val error: NSError?,
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent {
+) : ESPCoreBluetoothEvent {
     fun isSuccessful(): Boolean = error == null
 }
 
@@ -143,16 +143,16 @@ class ServiceCharacteristicsDiscoveredEvent(
     override val peripheral: CBPeripheral,
     val service: CBService,
     val error: NSError?,
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent {
+) : ESPCoreBluetoothEvent {
     fun isSuccessful(): Boolean = error == null
 }
 
 class PeripheralIsReadyToSend(
     override val peripheral: CBPeripheral,
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent
+) : ESPCoreBluetoothEvent
 
 sealed interface ESPCBCharacteristicEvent :
-    io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothEvent {
+    ESPCoreBluetoothEvent {
     val characteristic: CBCharacteristic
 
     val error: NSError?
@@ -164,18 +164,18 @@ class CharacteristicDidWriteValue(
     override val peripheral: CBPeripheral,
     override val characteristic: CBCharacteristic,
     override val error: NSError?
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCBCharacteristicEvent
+) : ESPCBCharacteristicEvent
 
 class CharacteristicDidUpdateNotificationState(
     override val peripheral: CBPeripheral,
     override val characteristic: CBCharacteristic,
     val enabled: Boolean,
     override val error: NSError?
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCBCharacteristicEvent
+) : ESPCBCharacteristicEvent
 
 class CharacteristicDidUpdateValue(
     override val peripheral: CBPeripheral,
     override val characteristic: CBCharacteristic,
     val value: ByteArray,
     override val error: NSError?
-) : io.github.developrofthings.kespl.bluetooth.connection.le.ESPCBCharacteristicEvent
+) : ESPCBCharacteristicEvent

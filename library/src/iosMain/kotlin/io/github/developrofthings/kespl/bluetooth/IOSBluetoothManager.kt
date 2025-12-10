@@ -21,16 +21,16 @@ import kotlin.uuid.ExperimentalUuidApi
 internal class IOSBluetoothManager() : IBluetoothManager {
 
     override val espContext: ESPContext =
-        _root_ide_package_.io.github.developrofthings.kespl.ESPContext()
+        ESPContext()
 
     private val _delegate =
-        _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ESPCentralManagerDelegate()
+        ESPCentralManagerDelegate()
 
-    val delegate: io.github.developrofthings.kespl.bluetooth.connection.le.ESPCentralManagerDelegate get() = _delegate
+    val delegate: ESPCentralManagerDelegate get() = _delegate
 
     internal val _cbCentralManager = CBCentralManager(
         delegate = _delegate,
-        queue = dispatch_queue_create(label = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.DISPATCHER_LABEL, null),
+        queue = dispatch_queue_create(label = DISPATCHER_LABEL, null),
     )
 
     val cbCentralManager: CBCentralManager get() = _cbCentralManager
@@ -40,18 +40,18 @@ internal class IOSBluetoothManager() : IBluetoothManager {
         // We don't care about these intermediate states... Block until the CentralManager we are in
         // a "settled" state such as `PoweredOn`, `PoweredOff`, `Unauthorized` or `Unsupported`.
         .filterNot {
-            it == _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Unknown ||
-            it == _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Resetting
+            it == IOSCentralManagerState.Unknown ||
+            it == IOSCentralManagerState.Resetting
         }.firstOrNull()?.let {
             // `PoweredOn` should be treated as a ready state...
-            it == _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.PoweredOn
+            it == IOSCentralManagerState.PoweredOn
         } ?: false
 
     override suspend fun checkIsBluetoothSupported(): Boolean {
         if(!waitUntilManagerIsReady())  {
             // Bluetooth is not ready but that doesn't mean it's not supported of the device, it
             // could be `PoweredOn`, `PoweredOff`, `Unauthorized`
-            return _delegate.managerState.value != _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Unsupported
+            return _delegate.managerState.value != IOSCentralManagerState.Unsupported
         }
         return true
     }
@@ -60,7 +60,7 @@ internal class IOSBluetoothManager() : IBluetoothManager {
         if(!waitUntilManagerIsReady())  {
             // Bluetooth is not ready but that doesn't mean it's not supported of the device, it
             // could be `PoweredOn`, `PoweredOff`, `Unauthorized`
-            return _delegate.managerState.value != _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Unsupported
+            return _delegate.managerState.value != IOSCentralManagerState.Unsupported
         }
         return true
     }
@@ -70,13 +70,13 @@ internal class IOSBluetoothManager() : IBluetoothManager {
     override suspend fun checkHasBluetoothPermission(): Boolean {
         if(!waitUntilManagerIsReady())  {
             // Bluetooth is not ready, check to see if its in the unauthorized state
-            return _delegate.managerState.value != _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.Unauthorized
+            return _delegate.managerState.value != IOSCentralManagerState.Unauthorized
         }
         return true
     }
 
     override val bluetoothEnabled: Flow<Boolean>
-        get() = _delegate.managerState.map { it == _root_ide_package_.io.github.developrofthings.kespl.bluetooth.IOSCentralManagerState.PoweredOn }
+        get() = _delegate.managerState.map { it == IOSCentralManagerState.PoweredOn }
 
     override suspend fun tryAcquireBTDevice(identifier: String): BTDevice? {
         val peripheral: CBPeripheral? = _cbCentralManager.retrievePeripheralsWithIdentifiers(

@@ -35,8 +35,8 @@ import platform.CoreBluetooth.CBUUID
 internal class IOSLeClient(
     internal val peripheral: CBPeripheral,
     private val centralManager: CBCentralManager,
-    private val centralManagerDelegate: io.github.developrofthings.kespl.bluetooth.connection.le.ESPCentralManagerDelegate,
-    private val peripheralDelegate: io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothPeripheralDelegate,
+    private val centralManagerDelegate: ESPCentralManagerDelegate,
+    private val peripheralDelegate: ESPCoreBluetoothPeripheralDelegate,
     private val logger: PlatformLogger,
     scope: CoroutineScope,
 ) : PlatformLeClient {
@@ -50,7 +50,7 @@ internal class IOSLeClient(
 
     override val connectionStatus: StateFlow<ESPConnectionStatus> = centralManagerDelegate
         .events
-        .filterForPeripheral<io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent>(peripheral)
+        .filterForPeripheral<CentralManagerConnectionEvent>(peripheral)
         .map { it.status }
         .stateIn(
             scope = clientScope,
@@ -125,7 +125,7 @@ internal class IOSLeClient(
             centralManagerDelegate
                 .events
                 .onSubscription { cancelConnection() }
-                .filterForPeripheral<io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerConnectionEvent>(peripheral)
+                .filterForPeripheral<CentralManagerConnectionEvent>(peripheral)
                 .filter { it.isDisconnected }
                 .first()
             // Make sure to clear the delegate after we've detected a disconnection... NEVER BEFORE
@@ -144,7 +144,7 @@ internal class IOSLeClient(
                 tag = "IOSLeClient",
                 message = "Attempting to discover services and characteristics while not connected"
             )
-            throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralNotConnectedException()
+            throw PeripheralNotConnectedException()
         }
 
         /*
@@ -157,16 +157,16 @@ internal class IOSLeClient(
         ): Boolean = peripheralDelegate.events
             .onSubscription {
                 peripheral.discoverCharacteristics(
-                    characteristicUUIDs = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.v1connectionLECharacteristics,
+                    characteristicUUIDs = v1connectionLECharacteristics,
                     forService = service,
                 )
             }
-            .filterForPeripheral<io.github.developrofthings.kespl.bluetooth.connection.le.ServiceCharacteristicsDiscoveredEvent>(peripheral)
+            .filterForPeripheral<ServiceCharacteristicsDiscoveredEvent>(peripheral)
             .map { event ->
                 val characteristics = event.service.characteristics
                 if (!event.isSuccessful() || characteristics.isNullOrEmpty()) {
                     // We failed to discover characteristics for service
-                    throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.FailedToDiscoverServiceCharacteristics()
+                    throw FailedToDiscoverServiceCharacteristics()
                 }
 
                 // We successfully discovered characteristics for service return true
@@ -174,8 +174,8 @@ internal class IOSLeClient(
             }.firstOrNull()
         // If we reach this point we don't know exactly what has gone wrong but we know we
         // failed to discovery characteristics for a service
-            ?: throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.UnknownException(
-                operation = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation.DiscoverServiceCharacteristics,
+            ?: throw UnknownException(
+                operation = CoreBluetoothOperation.DiscoverServiceCharacteristics,
             )
 
         return _mutex.withLock {
@@ -185,13 +185,13 @@ internal class IOSLeClient(
                         serviceUUIDs = listOf(EspUUID.V1CONNECTION_LE_SERVICE_CBUUID)
                     )
                 }
-                .filterForPeripheral<io.github.developrofthings.kespl.bluetooth.connection.le.ServicesDiscoveredEvent>(peripheral)
+                .filterForPeripheral<ServicesDiscoveredEvent>(peripheral)
                 .map { event ->
                     val services = event.services
                     // An empty services list is considered exceptional because a V1connection
                     // should ALWAYS report the V1c LE service
                     if (!event.isSuccessful() || services.isEmpty()) {
-                        throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.FailedToDiscoverServices()
+                        throw FailedToDiscoverServices()
                     }
                     // We've successfully discover the services now we must discover the
                     // ESP characteristics for the ESP Service
@@ -211,7 +211,7 @@ internal class IOSLeClient(
                         return@map null
                     }
 
-                    _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.IOSLeServiceWrapper(
+                    IOSLeServiceWrapper(
                         peripheral = peripheral,
                         service = leService,
                         isConnected = ::isConnected,
@@ -222,8 +222,8 @@ internal class IOSLeClient(
                 }.firstOrNull()
             // If we reach this point we don't know exactly what has gone wrong but we know we
             // failed to discover services
-                ?: throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.UnknownException(
-                    operation = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation.DiscoverServices
+                ?: throw UnknownException(
+                    operation = CoreBluetoothOperation.DiscoverServices
                 )
         }
     }
@@ -234,19 +234,19 @@ internal class IOSLeClient(
                 tag = "IOSLeClient",
                 message = "Attempting to read Rssi while not connected",
             )
-            throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.PeripheralNotConnectedException()
+            throw PeripheralNotConnectedException()
         }
 
         return _mutex.withLock {
             peripheralDelegate.events
                 .onSubscription { peripheral.readRSSI() }
-                .filterForPeripheral<io.github.developrofthings.kespl.bluetooth.connection.le.ReadRemoteRssiEvent>(peripheral)
+                .filterForPeripheral<ReadRemoteRssiEvent>(peripheral)
                 .map { event ->
-                    if (!event.isSuccessful()) throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ReadRemoteRssiException()
+                    if (!event.isSuccessful()) throw ReadRemoteRssiException()
                     event.rssi
                 }.firstOrNull()
-                ?: throw _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.UnknownException(
-                    _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.CoreBluetoothOperation.RemoteRssi
+                ?: throw UnknownException(
+                    CoreBluetoothOperation.RemoteRssi
                 )
         }
     }
@@ -270,16 +270,16 @@ internal actual suspend fun getPlatformLeClient(
     bluetoothManager: IBluetoothManager,
     logger: PlatformLogger,
     coroutineScope: CoroutineScope
-): PlatformLeClient = _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.ESPCoreBluetoothPeripheralDelegate()
+): PlatformLeClient = ESPCoreBluetoothPeripheralDelegate()
     .let { peripheralDelegate ->
-        _root_ide_package_.io.github.developrofthings.kespl.bluetooth.connection.le.IOSLeClient(
+        IOSLeClient(
             peripheral = v1c.device.realDevice.apply {
                 // Make sure we register our delegate so we can observe Peripheral level
                 // events
                 this.delegate = peripheralDelegate
             },
 
-            centralManager = (bluetoothManager as io.github.developrofthings.kespl.bluetooth.IOSBluetoothManager).cbCentralManager,
+            centralManager = (bluetoothManager as IOSBluetoothManager).cbCentralManager,
             centralManagerDelegate = bluetoothManager.delegate,
             peripheralDelegate = peripheralDelegate,
             logger = logger,

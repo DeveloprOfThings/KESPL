@@ -3,7 +3,7 @@ package io.github.developrofthings.kespl.utilities
 import platform.Foundation.NSLog
 
 actual fun createLogger(enabled: Boolean): PlatformLogger =
-    _root_ide_package_.io.github.developrofthings.kespl.utilities.IOSPlatformLogger(enabled = enabled)
+    IOSPlatformLogger(enabled = enabled)
 
 internal class IOSPlatformLogger(
     override var enabled: Boolean,
