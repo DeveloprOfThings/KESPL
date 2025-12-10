@@ -11,9 +11,6 @@ import io.github.developrofthings.kespl.bluetooth.connection.le.CentralManagerDi
 import io.github.developrofthings.kespl.bluetooth.discovery.ESPScanMode
 import io.github.developrofthings.kespl.bluetooth.discovery.IV1cScanner
 import io.github.developrofthings.kespl.bluetooth.discovery.V1C_LE_SCANNER_QUALIFER
-import io.github.developrofthings.kespl.bluetooth.discovery.le.startScan
-import io.github.developrofthings.kespl.bluetooth.discovery.le.toScanResult
-import io.github.developrofthings.kespl.bluetooth.discovery.le.toV1connection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
