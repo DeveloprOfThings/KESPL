@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":library")
+include(":callbacks")

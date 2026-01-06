@@ -184,7 +184,7 @@ private fun ByteArray.calculateChecksum(
  */
 internal fun ByteArray.validateChecksum(): Boolean = calculateESPChecksum() == this[size - 2]
 
-internal fun ByteArray.toHexString(): String {
+fun ByteArray.toHexString(): String {
     // To prevent any possible array resizing we wanna pre-calc. the
     // size of the final string.
     val capacity: Int = (3 * size) - 1
@@ -365,7 +365,7 @@ internal fun escapeBytesForLegacyWrite(bytes: ByteArray): ByteArray {
     }
 }
 
-internal fun assemblePayload(
+fun assemblePayload(
     useChecksum: Boolean,
     destinationByte: Byte,
     originIdByte: Byte,

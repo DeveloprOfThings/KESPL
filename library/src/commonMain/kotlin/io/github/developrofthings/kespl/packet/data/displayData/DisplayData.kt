@@ -6,7 +6,7 @@ import kotlin.jvm.JvmInline
  * Display information needed to rebuild the front panel display of a Valentine One.
  */
 @JvmInline
-value class DisplayData(internal val bytes: ByteArray) {
+value class DisplayData(val bytes: ByteArray) {
 
     /**
      * Returns the byte at the specified index in the display data.

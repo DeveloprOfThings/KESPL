@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
-internal fun getDefaultScope(
+fun getDefaultScope(
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
     parent: Job? = null
 ): CoroutineScope = CoroutineScope(dispatcher + SupervisorJob(parent))

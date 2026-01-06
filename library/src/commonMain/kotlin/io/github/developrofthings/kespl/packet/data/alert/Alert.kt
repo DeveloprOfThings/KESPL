@@ -45,7 +45,7 @@ fun ByteArray.alertData(): AlertData = AlertData(
     },
 )
 
-internal fun Flow<ByteArray>.alertTable(): Flow<List<AlertData>> = flow {
+fun Flow<ByteArray>.alertTable(): Flow<List<AlertData>> = flow {
     val alerts = MutableList(15) { emptyAlert }
     var size = 0
     var expectedTableSize = 0

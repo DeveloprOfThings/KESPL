@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.android.lint)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    id("dev.mokkery") version "2.10.2"
+    id("dev.mokkery") version "3.1.1"
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
@@ -147,7 +147,11 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.developrofthings", "kespl", "0.9.1")
+    coordinates(
+        groupId = "io.github.developrofthings",
+        artifactId = "kespl",
+        version = libs.versions.kesplVersion.get()
+    )
 
     pom {
         name = "KESPL"
