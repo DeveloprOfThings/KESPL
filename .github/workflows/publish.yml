@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   release:
     types: [released, prereleased]
+
 jobs:
   publish:
     name: Release build and publish
@@ -10,12 +11,41 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 21
+          cache: 'gradle'
+
+      - name: Extract Project Metadata
+        id: metadata
+        run: |
+          # Grabs VERSION_NAME and GROUP from gradle.properties
+          VERSION=$(grep "VERSION_NAME" gradle.properties | cut -d'=' -f2 | xargs)
+          GROUP=$(grep "GROUP" gradle.properties | cut -d'=' -f2 | xargs)
+          GROUP_PATH=$(echo $GROUP | tr '.' '/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "group_path=$GROUP_PATH" >> $GITHUB_OUTPUT
+
+      - name: Check if version already exists
+        run: |
+          VERSION=${{ steps.metadata.outputs.version }}
+          GROUP_PATH=${{ steps.metadata.outputs.group_path }}
+          
+          # We check the 'kespl' module. If it exists, we stop.
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://repo1.maven.org/maven2/$GROUP_PATH/kespl/$VERSION/kespl-$VERSION.pom)
+          
+          if [ "$STATUS_CODE" -eq 200 ]; then
+            echo "::error::Version $VERSION already exists on Maven Central. Update VERSION_NAME before publishing."
+            exit 1
+          else
+            echo "Version $VERSION is available for publishing."
+          fi
+
       - name: Publish to MavenCentral
+        # This publishes all modules (kespl and kespl-callbacks)
         run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -24,3 +54,10 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
 
+      - name: Generate Summary
+        if: success()
+        run: |
+          echo "### 🚀 Successfully Published!" >> $GITHUB_STEP_SUMMARY
+          echo "Version: \`${{ steps.metadata.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Modules: \`kespl\`, \`kespl-callbacks\`" >> $GITHUB_STEP_SUMMARY
+          echo "It may take 15-30 minutes for the artifacts to appear on [Maven Central Search](https://central.sonatype.com/)." >> $GITHUB_STEP_SUMMARY
