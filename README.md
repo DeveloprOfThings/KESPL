@@ -35,7 +35,7 @@ kotlin {
         // ... other source sets ie Android, iOS 
         commonMain.dependencies {
             // ... Other common source dependencies
-            implementation("io.github.developrofthings:kespl:0.9.0")
+            implementation("io.github.developrofthings:kespl:0.9.2")
         }
     }
 }
@@ -153,10 +153,10 @@ capabilities.
 
 ### Event
 
-| Events                        | Explanation                                 |
-|-------------------------------|---------------------------------------------|
-| `IESPClient.noData`           | Stream No "ESP" data received notifications |
-| `IESPClient.notificationData` | Stream of Demo Mode "notification" messages |
+| Events                        | Explanation                                     |
+|-------------------------------|-------------------------------------------------|
+| `IESPClient.noData`           | Stream of "No ESP" Data received notifications  |
+| `IESPClient.notificationData` | Stream of Demo Mode "notification" messages     |
 
 ### ESP Data
 
@@ -283,6 +283,58 @@ If developers prefer to handle `V1connection` discovery themselves `IESPClient` 
 `connect(...)` overload that accepts a `V1connection` and side-steps pre-discovery. This overload 
 also accepts a `directConnect` argument that provides developers the option to attempt a connection 
 that doesn't timeout. This is ideal for background re/connections.
+
+## 📞 Callbacks (Legacy)
+To improve integration w/ existing app's that rely on the "callback" architecture, a **callback** 
+library (`kespl-callbacks`) is available. Currently, the library offers 6 _listener_ interfaces:
+
+
+| Events                          | Explanation                                           |
+|---------------------------------|-------------------------------------------------------|
+| `ESPConnectionStatusListener`   | Listen to client's connection status                  |
+| `NoDataListener`                | Listen to "NO ESP" data notifications                 |
+| `NotificationListener`          | Listen to Demo Mode "notification" messages           |
+| `ESPPacketListener`             | Listen to `ESPPacket` received from the **ESP bus**   |
+| `DisplayDataListener`           | Listen to `DisplayData` received from the **ESP bus** |
+| `AlertTableListener`            | Listen to "complete" alert tables                     |
+
+> [!NOTE]
+> Since `IESPClient.connectionStatus` is a `StateFlow`, **initial** registration of a
+> `ESPConnectionStatusListener` will cause it's `onConnectionStatusChange(...)` function to be 
+> invoked with the client's current connection status (initially 
+> `ESPConnectionStatus.Disconnected`). 
+
+These callbacks are invoked by collecting from the respective `Flows` available in `IESPClient`. A
+similar pattern can be achieved by developers to listen for additional data/events not currently
+supported.
+
+Add the following declaration to your app-module's `build.gradle`/`build.gradle.kts` dependency 
+block:
+```Kotlin
+implementation("io.github.developrofthings:kespl-callbacks:0.9.2")
+```
+
+The callback registration functions have been declared as extension functions on `IESPClient`. Each 
+callback has two deregistration functions. One for unregistering a single callback and another for 
+clear all registered callbacks ie `unregisterConnectionListeners()`.
+
+> [!NOTE]
+> Removing all callbacks will cancel `Flow` collection.
+
+
+Here's an example for listening to `ESPConnectionStatus` :
+```Kotlin
+espClient.registerConnectionListener { status ->
+    // TODO do something w/ status
+}
+
+...
+// Use this function with passing "inline" listener ie lambda
+espClient.unregisterConnectionListeners()
+
+// or use
+espClient.unregisterConnectionListener(listener = ...)
+```
 
 ## √ ESP Specification
 **KESPL** is based on **v.3.015** of the ESP Specification which can be found on the official Github 
