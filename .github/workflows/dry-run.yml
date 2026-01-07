@@ -20,7 +20,7 @@ jobs:
       - name: Publish to Local Directory
         # We redirect the "mavenLocal" output to a specific folder we can grab
         run: |
-          ./gradlew publishAllPublicationsToMavenLocal \
+          ./gradlew publishToMavenLocal \
             -Dmaven.repo.local=./build/local-repo \
             --no-configuration-cache
         env:
