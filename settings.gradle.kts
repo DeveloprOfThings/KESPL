@@ -25,6 +25,7 @@ dependencyResolutionManagement {
             }
         }
         maven { setUrl("https://jitpack.io") }
+        mavenLocal()
         mavenCentral()
     }
 }
@@ -32,3 +33,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":library")
 include(":callbacks")
+
+project(":library").name = "kespl"
+project(":callbacks").name = "kespl-callbacks"

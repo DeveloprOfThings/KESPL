@@ -56,7 +56,7 @@ kotlin {
             // JSON
             implementation(libs.kotlinx.serialization.json)
             // Add KESPL dependency
-            implementation(libs.kespl)
+            implementation(libs.kespl.callbacks)
 
             // Koin core
             implementation(libs.koin.core)

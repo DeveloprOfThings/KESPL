@@ -1,6 +1,5 @@
 [versions]
-kesplVersion = "0.9.2"
-kespl = "0.9.1"
+kespl = "0.9.2"
 constraintlayoutComposeMultiplatform = "0.6.1"
 datastoreCoreOkio = "1.2.0"
 kotlinxCoroutinesCore = "1.10.2"
@@ -14,10 +13,7 @@ androidGradlePlugin = "8.13.2"
 arrow = "2.2.1.1"
 kotlin = "2.3.0"
 kotlinxCoroutinesTest = "1.10.2"
-junitJupiter = "6.0.0"
-coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.3.0"
 activityCompose = "1.12.2"
 mockk = "1.14.7"
 protobufPlugin = "0.9.6"
@@ -33,15 +29,10 @@ kotlinStdlib = "2.3.0"
 kotlinTest = "2.2.21"
 annotationJvm = "1.9.1"
 coreVersion = "1.17.0"
-runnerVersion = "1.7.0"
-androidxCore = "1.7.0"
 composeMultiplatform = "1.9.3"
 androidx-lifecycle = "2.9.6"
 adaptive = "1.2.0"
 vanniktechMavenPublish = "0.35.0"
-runner = "1.7.0"
-core = "1.7.0"
-androidxJunit = "1.3.0"
 
 [libraries]
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
@@ -51,8 +42,8 @@ arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref 
 constraintlayout-compose-multiplatform = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraintlayoutComposeMultiplatform" }
 datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastoreCoreOkio" }
 jetbrains-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref="composeMultiplatform" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-kespl = { module = "io.github.developrofthings:kespl", version = "0.9.1" }
+kespl = { module = "io.github.developrofthings:kespl", version.ref = "kespl" }
+kespl-callbacks = { module = "io.github.developrofthings:kespl-callbacks", version.ref = "kespl" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-bom" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-bom" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin-bom" }

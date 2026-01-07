@@ -12,3 +12,77 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.vanniktech.mavenPublish) apply false
 }
+
+// 1. Fetch properties at the very top
+val projectGroup = project.findProperty("GROUP")?.toString() ?: "io.github.developrofthings"
+val projectVersionName = project.findProperty("VERSION_NAME")?.toString() ?: "0.9.2-FALLBACK"
+
+// Explicitly apply to your modules
+project(":kespl") {
+    configurePublishing(
+        groupId = projectGroup,
+        artifactId = this.name,
+        versionName = projectVersionName,
+    )
+}
+
+project(":kespl-callbacks") {
+    configurePublishing(
+        groupId = projectGroup,
+        artifactId = this.name,
+        versionName = projectVersionName,
+    )
+}
+
+allprojects {
+    version = projectVersionName
+}
+
+// A helper function to apply the publishing logic
+fun Project.configurePublishing(
+    groupId: String,
+    artifactId: String,
+    versionName: String,
+) {
+    apply(plugin = "com.vanniktech.maven.publish")
+
+    extensions.configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+
+        publishToMavenCentral()
+
+        signAllPublications()
+
+        coordinates(
+            groupId = groupId,
+            artifactId = artifactId,
+            version = versionName
+        )
+
+        pom {
+            name = "KESPL"
+            description = "A Kotlin Extended Serial Protocol Library"
+            inceptionYear = "2025"
+            url = "https://github.com/DeveloprOfThings/KESPL"
+            licenses {
+                license {
+                    name = "MIT"
+                    url = "https://opensource.org/license/MIT"
+                    distribution = "https://opensource.org/license/MIT"
+                }
+            }
+            developers {
+                developer {
+                    id = "DeveloprOfThings"
+                    name = "Developr Of Things"
+                    url = "https://github.com/DeveloprOfThings"
+                }
+            }
+            scm {
+                url = "https://github.com/DeveloprOfThings/KESPL"
+                connection = "scm:git:https://github.com/DeveloprOfThings/KESPL.git"
+                developerConnection = "scm:git:https://github.com/DeveloprOfThings/KESPL.git"
+            }
+        }
+    }
+}
+

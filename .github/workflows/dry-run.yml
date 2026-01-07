@@ -1,0 +1,36 @@
+name: Dry Run Publish
+on:
+  workflow_dispatch: # Allows you to trigger this manually
+
+jobs:
+  dry-run:
+    name: Dry Run (Verify Artifacts)
+    runs-on: macOS-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+          cache: 'gradle'
+
+      - name: Publish to Local Directory
+        # We redirect the "mavenLocal" output to a specific folder we can grab
+        run: |
+          ./gradlew publishAllPublicationsToMavenLocal \
+            -Dmaven.repo.local=./build/local-repo \
+            --no-configuration-cache
+        env:
+          # We still need signing secrets to verify the signing step works
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
+
+      - name: Upload Artifacts for Inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-artifacts-dry-run
+          path: ./build/local-repo
