@@ -172,6 +172,15 @@ object V1VersionInfo {
             fullByte,
             fullByte,
         )
+
+        val T1_0000_UserBytes: ByteArray = byteArrayOf(
+            fullByte,
+            fullByte,
+            fullByte,
+            fullByte,
+            fullByte,
+            fullByte,
+        )
     }
 
     fun defaultUserBytesForVersion(version: Double): ByteArray = when {

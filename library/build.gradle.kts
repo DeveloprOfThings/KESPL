@@ -90,6 +90,10 @@ kotlin {
             implementation(libs.mockk)
         }
 
+        named("androidDeviceTest").dependencies {
+            implementation(libs.mockk)
+        }
+
         androidMain.dependencies {
             implementation(libs.androidx.annotation.jvm)
             implementation(libs.androidx.core)

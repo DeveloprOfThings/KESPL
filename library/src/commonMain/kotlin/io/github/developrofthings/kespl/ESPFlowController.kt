@@ -47,21 +47,21 @@ internal interface ESPFlowController {
 /**
  * Mutable collection of [Flow]s used for instrumenting ESP data communication.
  */
-internal interface MutableESPFlowController {
+internal interface MutableESPFlowController: ESPFlowController {
 
-    val notificationData: MutableSharedFlow<String>
+    override val notificationData: MutableSharedFlow<String>
 
-    val valentineOneType: MutableStateFlow<ESPDevice.ValentineOne>
+    override val valentineOneType: MutableStateFlow<ESPDevice.ValentineOne>
 
-    val v1Version: MutableStateFlow<Double>
+    override val v1Version: MutableStateFlow<Double>
 
-    val connectionStatus: MutableStateFlow<ESPConnectionStatus>
+    override val connectionStatus: MutableStateFlow<ESPConnectionStatus>
 
-    val espData: MutableSharedFlow<ByteArray>
+    override val espData: MutableSharedFlow<ByteArray>
 
-    val noData: MutableSharedFlow<Unit>
+    override val noData: MutableSharedFlow<Unit>
 
-    val isTimeSlicing: MutableStateFlow<Boolean>
+    override val isTimeSlicing: MutableStateFlow<Boolean>
 
     fun forceStatefulDefaults() {
         v1Version.tryEmit(value = 0.0)
@@ -76,7 +76,7 @@ internal class ImplESPFlowController(
     defaultV1Version: Double = 0.0,
     defaultConnectionStatus: ESPConnectionStatus = ESPConnectionStatus.Disconnected,
     defaultIsTimeSlicing: Boolean = false,
-) : ESPFlowController, MutableESPFlowController {
+) : MutableESPFlowController {
 
     override val notificationData = MutableSharedFlow<String>(
         extraBufferCapacity = 2,

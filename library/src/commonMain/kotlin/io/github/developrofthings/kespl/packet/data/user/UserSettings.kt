@@ -72,7 +72,4 @@ sealed interface UserSettings {
     val userBytes: ByteArray
 }
 
-val defaultUserBytes: ByteArray = ByteArray(USER_BYTE_COUNT)
-    .apply { repeat(6) { this[it] = fullByte } }
-
 internal const val USER_BYTE_COUNT: Int = 6
