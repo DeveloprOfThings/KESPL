@@ -15,7 +15,7 @@ plugins {
 
 // 1. Fetch properties at the very top
 val projectGroup = project.findProperty("GROUP")?.toString() ?: "io.github.developrofthings"
-val projectVersionName = project.findProperty("VERSION_NAME")?.toString() ?: "0.9.2-FALLBACK"
+val projectVersionName = project.findProperty("VERSION_NAME")?.toString() ?: "0.9.3-FALLBACK"
 
 // Explicitly apply to your modules
 project(":kespl") {
