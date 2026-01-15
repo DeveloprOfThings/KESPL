@@ -33,6 +33,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = xcfName
+            isStatic = true
         }
     }
 

@@ -35,22 +35,22 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
-import io.github.developrofthings.helloV1.ui.byteValue
-import io.github.developrofthings.helloV1.ui.isHex
-import io.github.developrofthings.helloV1.ui.theme.Valentine1Theme
-import io.github.developrofthings.kespl.packet.data.user.defaultUserBytes
 import hellov1.composeapp.generated.resources.Res
 import hellov1.composeapp.generated.resources.gui
 import hellov1.composeapp.generated.resources.read
 import hellov1.composeapp.generated.resources.user_bytes
 import hellov1.composeapp.generated.resources.write
+import io.github.developrofthings.helloV1.ui.byteValue
+import io.github.developrofthings.helloV1.ui.isHex
+import io.github.developrofthings.helloV1.ui.theme.Valentine1Theme
+import io.github.developrofthings.kespl.utilities.V1VersionInfo
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun rememberUserBytesState(
-    userBytes: ByteArray = defaultUserBytes,
+    userBytes: ByteArray = V1VersionInfo.UserSettingsInfo.V4_1000_UserBytes,
 ): UserBytesRowState {
     require(userBytes.size == 6) { "userBytes must be a ByteArray of `length == 6`" }
     return rememberSaveable(userBytes, saver = UserBytesRowState.Saver) {
@@ -293,7 +293,7 @@ private fun ESPButtonPanelPreview() {
     ) {
         UserBytesRow(
             modifier = Modifier.wrapContentSize(),
-            userBytesState = rememberUserBytesState(userBytes = defaultUserBytes),
+            userBytesState = rememberUserBytesState(),
             onReadClick = {},
             onWriteClick = { },
             onGuiClick = { },

@@ -16,7 +16,7 @@ import io.github.developrofthings.kespl.packet.data.allVolumes
 import io.github.developrofthings.kespl.packet.data.currentVolume
 import io.github.developrofthings.kespl.packet.data.displayData.DisplayData
 import io.github.developrofthings.kespl.packet.data.displayData.V1Mode
-import io.github.developrofthings.kespl.packet.data.user.defaultUserBytes
+import io.github.developrofthings.kespl.utilities.V1VersionInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +33,7 @@ class ControlsViewModel(
     private val espDataLogRepository: ESPDataLogRepository,
 ) : ViewModel() {
 
-    private val _userBytes = MutableStateFlow(defaultUserBytes)
+    private val _userBytes = MutableStateFlow(V1VersionInfo.UserSettingsInfo.V4_1000_UserBytes)
 
     private val _infDisplayUiState: StateFlow<InfDisplayState>
         get() = espService
@@ -350,7 +350,7 @@ data class ControlsUiState(
         val DEFAULT: ControlsUiState = ControlsUiState(
             connectionStatus = ESPConnectionStatus.Disconnected,
             infDisplayState = InfDisplayState.DEFAULT,
-            userBytes = defaultUserBytes,
+            userBytes = V1VersionInfo.UserSettingsInfo.V4_1000_UserBytes,
             volumeState = VolumeUiState.DEFAULT,
             targets = defaultAvailableDevices,
         )

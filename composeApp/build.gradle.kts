@@ -24,7 +24,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             // Exposes KESPL library to Objective-C/Swift code
-            export("io.github.developrofthings:kespl:0.9.0")
+            export(dependency = libs.kespl.callbacks)
             baseName = xcfName
             isStatic = true
         }
@@ -56,7 +56,7 @@ kotlin {
             // JSON
             implementation(libs.kotlinx.serialization.json)
             // Add KESPL dependency
-            implementation(libs.kespl.callbacks)
+            api(libs.kespl.callbacks)
 
             // Koin core
             implementation(libs.koin.core)

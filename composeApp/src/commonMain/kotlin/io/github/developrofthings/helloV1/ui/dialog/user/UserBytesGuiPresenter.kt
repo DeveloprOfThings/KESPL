@@ -4,8 +4,8 @@ import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepository
 import io.github.developrofthings.helloV1.service.IESPService
 import io.github.developrofthings.kespl.ESPDevice
 import io.github.developrofthings.kespl.ESPResponse
-import io.github.developrofthings.kespl.packet.data.user.defaultUserBytes
 import io.github.developrofthings.kespl.packet.isUserBytes
+import io.github.developrofthings.kespl.utilities.V1VersionInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -89,8 +89,7 @@ data class UserBytesUiState(
     companion object {
         val DEFAULT: UserBytesUiState = UserBytesUiState(
             isGen2 = false,
-            userBytes = defaultUserBytes,
-
-            )
+            userBytes = V1VersionInfo.UserSettingsInfo.V4_1000_UserBytes,
+        )
     }
 }
