@@ -4,6 +4,7 @@ import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepository
 import io.github.developrofthings.helloV1.data.repository.ESPDataLogRepositoryImpl
 import io.github.developrofthings.helloV1.service.ESPService
 import io.github.developrofthings.helloV1.service.IESPService
+import io.github.developrofthings.helloV1.ui.MainViewModel
 import io.github.developrofthings.helloV1.ui.controls.ControlsViewModel
 import io.github.developrofthings.helloV1.ui.dialog.sweep.SweepInfoPresenter
 import io.github.developrofthings.helloV1.ui.dialog.user.UserBytesGuiPresenter
@@ -38,9 +39,7 @@ fun initApp(
     initKoin(platformModule = platformModule)
 }
 
-private fun initKoin(
-    platformModule: Module,
-): Koin = startKoin {
+private fun initKoin(platformModule: Module): Koin = startKoin {
     val appModule = module {
         factory {
             IESPClient.getClient(
@@ -108,11 +107,8 @@ private fun initKoin(
                 espDataLogRepository = get<ESPDataLogRepository>(),
             )
         }
-        viewModel {
-            ESPLogViewModel(
-                espDataLogRepository = get<ESPDataLogRepository>(),
-            )
-        }
+        viewModel { ESPLogViewModel(espDataLogRepository = get<ESPDataLogRepository>()) }
+        viewModel { MainViewModel(espService = get<IESPService>()) }
     }
 
     modules(platformModule, appModule, viewModels)

@@ -15,14 +15,14 @@ plugins {
 
 // 1. Fetch properties at the very top
 val projectGroup = project.findProperty("GROUP")?.toString() ?: "io.github.developrofthings"
-val projectVersionName = project.findProperty("VERSION_NAME")?.toString() ?: "0.9.3-FALLBACK"
+val kesplLibVersion = libs.versions.kespl.get()
 
 // Explicitly apply to your modules
 project(":kespl") {
     configurePublishing(
         groupId = projectGroup,
         artifactId = this.name,
-        versionName = projectVersionName,
+        versionName = kesplLibVersion,
     )
 }
 
@@ -30,12 +30,12 @@ project(":kespl-callbacks") {
     configurePublishing(
         groupId = projectGroup,
         artifactId = this.name,
-        versionName = projectVersionName,
+        versionName = kesplLibVersion,
     )
 }
 
 allprojects {
-    version = projectVersionName
+    version = kesplLibVersion
 }
 
 // A helper function to apply the publishing logic

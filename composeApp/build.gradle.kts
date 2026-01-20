@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    id("co.touchlab.skie") version "0.10.9"
 }
 
 kotlin {
@@ -32,19 +33,18 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.core.splashscreen)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.component.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(compose.components.resources)
             implementation(libs.constraintlayout.compose.multiplatform)
             implementation(libs.kotlin.stdlib)
             implementation(libs.jetbrains.ui.backhandler)
@@ -79,6 +79,12 @@ kotlin {
     }
 }
 
+skie {
+    features {
+        enableSwiftUIObservingPreview = true
+    }
+}
+
 // Trigger Common Metadata Generation from Native tasks
 tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }
     .configureEach {
@@ -110,10 +116,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
 }
 
 tasks.withType<Test> {

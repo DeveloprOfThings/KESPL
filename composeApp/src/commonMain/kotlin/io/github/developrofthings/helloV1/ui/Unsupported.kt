@@ -1,5 +1,7 @@
 package io.github.developrofthings.helloV1.ui
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +29,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Serializable
 data object Unsupported
 
-fun NavGraphBuilder.unsupported() {
-    composable<Unsupported> { UnsupportedScreen() }
+fun NavGraphBuilder.unsupported(
+) {
+    composable<Unsupported>(
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+    ) { UnsupportedScreen() }
 }
 
 @Preview
@@ -43,7 +49,7 @@ private fun UnsupportedScreen() = Box(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Box(contentAlignment = Alignment.Center,) {
+        Box(contentAlignment = Alignment.Center) {
             Image(
                 imageVector = vectorResource(Res.drawable.ic_bluetooth),
                 contentDescription = null,

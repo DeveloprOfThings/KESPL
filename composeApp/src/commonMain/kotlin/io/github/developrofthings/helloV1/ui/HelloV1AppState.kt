@@ -6,13 +6,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.github.developrofthings.helloV1.service.IESPService
+import io.github.developrofthings.helloV1.ui.main.Main
 import io.github.developrofthings.kespl.IESPClient
 import io.github.developrofthings.kespl.bluetooth.ESPConnectionStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
@@ -46,6 +51,4 @@ class HelloV1AppState(
                 started = SharingStarted.Eagerly,
                 initialValue = false,
             )
-
-    val isBluetoothSupported: Boolean = IESPClient.isBluetoothSupported()
 }

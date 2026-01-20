@@ -6,12 +6,25 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import io.github.developrofthings.helloV1.ui.MainViewModel
 import io.github.developrofthings.helloV1.ui.V1App
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
+    val mainViewModel: MainViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Handle the splash screen transition.
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        // Keep the splash screen visible for this Activity.
+        splashScreen.setKeepOnScreenCondition {
+            mainViewModel.holdSplashScreen.value
+        }
+
         // Update the edge to edge configuration to match the theme
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(

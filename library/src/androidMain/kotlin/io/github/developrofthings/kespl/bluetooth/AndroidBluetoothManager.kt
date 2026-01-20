@@ -14,7 +14,9 @@ internal class AndroidBluetoothManager(
     override val espContext: ESPContext,
     private val bluetoothStateManager: AndroidBluetoothStateManager,
 ): IBluetoothManager {
-    override suspend fun checkIsBluetoothSupported(): Boolean = espContext.isBluetoothSupported()
+    override suspend fun checkIsBluetoothSupported(): Boolean {
+        return espContext.isBluetoothSupported()
+    }
 
     override suspend fun checkIsBluetoothLESupported(): Boolean = espContext.isBluetoothLESupported()
 

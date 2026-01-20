@@ -24,14 +24,17 @@ import io.github.developrofthings.kespl.packet.data.user.UserSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
@@ -40,6 +43,14 @@ class ESPService(
     private val espClient: IESPClient,
     private val coroutineScope: CoroutineScope,
 ) : IESPService {
+
+    override val isBluetoothSupported: SharedFlow<Boolean> = IESPClient::querySystemBluetoothSupport
+        .asFlow()
+        .shareIn(
+            scope = coroutineScope,
+            started = SharingStarted.Lazily,
+            replay = 1,
+        )
 
     override val v1CapabilityInfo: StateFlow<V1CapabilityInfo>
         get() = espClient.v1CapabilityInfo

@@ -311,7 +311,7 @@ supported.
 Add the following declaration to your app-module's `build.gradle`/`build.gradle.kts` dependency 
 block:
 ```Kotlin
-implementation("io.github.developrofthings:kespl-callbacks:0.9.2")
+implementation("io.github.developrofthings:kespl-callbacks:0.9.5")
 ```
 
 The callback registration functions have been declared as extension functions on `IESPClient`. Each 

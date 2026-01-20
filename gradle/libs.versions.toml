@@ -1,5 +1,5 @@
 [versions]
-kespl = "0.9.4"
+kespl = "0.9.5"
 constraintlayoutComposeMultiplatform = "0.6.1"
 datastoreCoreOkio = "1.2.0"
 kotlinxCoroutinesCore = "1.10.2"
@@ -10,14 +10,13 @@ compileSDK = "36"
 mokoPermissions = "0.20.1"
 targetSDK = "36"
 androidGradlePlugin = "8.13.2"
-arrow = "2.2.1.1"
-kotlin = "2.3.0"
+arrow = "2.2.0"
+kotlin = "2.2.21"
 kotlinxCoroutinesTest = "1.10.2"
 junit = "4.13.2"
 activityCompose = "1.12.2"
 mockk = "1.14.7"
 protobufPlugin = "0.9.6"
-jetbrainsKotlinJvm = "2.3.0"
 atomicfu = "0.29.0"
 koin-bom = "4.1.1"
 koin = "4.1.1"
@@ -25,14 +24,14 @@ ksp = "2.2.20-2.0.3"
 koin-annotations = "2.3.1"
 turbine = "1.2.1"
 kotlinxSerializationJson = "1.9.0"
-kotlinStdlib = "2.3.0"
-kotlinTest = "2.2.21"
 annotationJvm = "1.9.1"
 coreVersion = "1.17.0"
 composeMultiplatform = "1.10.0"
+composeMaterial3 = "1.9.0"
 androidx-lifecycle = "2.9.6"
 adaptive = "1.2.0"
 vanniktechMavenPublish = "0.35.0"
+coreSplashScreen = "1.2.0"
 
 [libraries]
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
@@ -41,15 +40,15 @@ arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 constraintlayout-compose-multiplatform = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraintlayoutComposeMultiplatform" }
 datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastoreCoreOkio" }
-jetbrains-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref="composeMultiplatform" }
+jetbrains-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "composeMultiplatform" }
 kespl = { module = "io.github.developrofthings:kespl", version.ref = "kespl" }
 kespl-callbacks = { module = "io.github.developrofthings:kespl-callbacks", version.ref = "kespl" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-bom" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-bom" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-annotations = {module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations"}
-koin-ksp-compiler = {module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations"}
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
+koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
@@ -60,26 +59,32 @@ atomicfu = { group = "org.jetbrains.kotlinx", name = "atomicfu", version.ref = "
 permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "mokoPermissions" }
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "mokoPermissions" }
 permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "mokoPermissions" }
-square-turbine = { group = "app.cash.turbine", name="turbine", version.ref="turbine" }
-kotlinx-serialization-json = { group="org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref="kotlinxSerializationJson" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+square-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "coreVersion" }
 adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive", version.ref = "adaptive" }
 adaptive-layout = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-layout", version.ref = "adaptive" }
 adaptive-navigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "adaptive" }
+core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashScreen" }
+compose-runtime = { module="org.jetbrains.compose.runtime:runtime", version.ref="composeMultiplatform" }
+compose-foundation = { module="org.jetbrains.compose.foundation:foundation", version.ref="composeMultiplatform" }
+compose-material3 = { module="org.jetbrains.compose.material3:material3", version.ref="composeMaterial3" }
+compose-ui = { module="org.jetbrains.compose.ui:ui", version.ref="composeMultiplatform" }
+compose-component-resources= { module="org.jetbrains.compose.components:components-resources", version.ref="composeMultiplatform" }
 
 [plugins]
-ksp = { id="com.google.devtools.ksp", version.ref = "ksp"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref="kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }

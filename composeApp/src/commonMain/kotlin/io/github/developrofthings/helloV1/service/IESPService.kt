@@ -21,10 +21,13 @@ import io.github.developrofthings.kespl.packet.data.sweep.SweepDefinition
 import io.github.developrofthings.kespl.packet.data.sweep.SweepSection
 import io.github.developrofthings.kespl.packet.data.user.UserSettings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.uuid.ExperimentalUuidApi
 
 interface IESPService {
+
+    val isBluetoothSupported: SharedFlow<Boolean>
 
     val connection: Flow<Unit>
 

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.android.lint)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    id("dev.mokkery") version "3.1.1"
+    id("dev.mokkery") version "3.0.0"
 }
 
 mokkery {

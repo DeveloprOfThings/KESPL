@@ -1731,10 +1731,10 @@ interface IESPClient {
         fun isBluetoothSupported(): Boolean = ESPIsolatedKoinContext.koin.get<ESPContext>()
             .isBluetoothSupported()
 
-        internal suspend fun querySystemBluetoothSupport(): Boolean =
+        suspend fun querySystemBluetoothSupport(): Boolean =
             ESPIsolatedKoinContext.koin.get<IBluetoothManager>().checkIsBluetoothSupported()
 
-        internal suspend fun querySystemBluetoothLESupport(): Boolean =
+        suspend fun querySystemBluetoothLESupport(): Boolean =
             ESPIsolatedKoinContext.koin.get<IBluetoothManager>().checkIsBluetoothLESupported()
     }
 }

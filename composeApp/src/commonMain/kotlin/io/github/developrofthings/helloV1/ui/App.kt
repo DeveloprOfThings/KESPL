@@ -3,15 +3,12 @@ package io.github.developrofthings.helloV1.ui
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -33,36 +30,36 @@ import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import io.github.developrofthings.helloV1.ui.effect.ConnectionEffect
 import io.github.developrofthings.helloV1.ui.effect.ScreenOnEffect
+import io.github.developrofthings.helloV1.ui.main.Main
 import io.github.developrofthings.helloV1.ui.navigation.HelloV1NavHost
 import io.github.developrofthings.helloV1.ui.theme.Valentine1Theme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun V1App(appState: HelloV1AppState = rememberHelloV1AppState()) {
     Valentine1Theme {
         val isConnected by appState.isConnected.collectAsStateWithLifecycle(false)
-        ScreenOnEffect(keepScreenOn = isConnected)
-        ConnectionEffect()
-
         val snackbarHost = remember { SnackbarHostState() }
         val permissionControllerFactory = rememberPermissionsControllerFactory()
         val permissionController = remember(permissionControllerFactory) {
             permissionControllerFactory.createPermissionsController()
         }
-
-        BindEffect(permissionController)
-        LaunchedEffect(permissionController) {
+        ScreenOnEffect(keepScreenOn = isConnected)
+        ConnectionEffect()
+        BindEffect(permissionsController = permissionController)
+        BluetoothSupportedEffect(appState = appState) {
             checkPermission(
                 controller = permissionController,
                 snackbarHostState = snackbarHost
             )
         }
-
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHost) },
-            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            contentWindowInsets = WindowInsets(left = 0, top = 0, right = 0, bottom = 0),
         ) { padding ->
             HelloV1NavHost(
-                isBluetoothSupported = appState.isBluetoothSupported,
                 navController = appState.navController,
                 modifier =
                     Modifier
@@ -70,12 +67,33 @@ fun V1App(appState: HelloV1AppState = rememberHelloV1AppState()) {
                         .padding(padding)
                         .consumeWindowInsets(padding)
                         .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal,
+                            insets = WindowInsets.safeDrawing.only(
+                                sides = WindowInsetsSides.Horizontal,
                             ),
                         )
             )
         }
+    }
+}
+
+@Composable
+fun BluetoothSupportedEffect(
+    appState: HelloV1AppState,
+    onSupported: suspend () -> Unit,
+) {
+    LaunchedEffect(key1 = appState) {
+        val isBtSupported = appState
+            .espService
+            .isBluetoothSupported.first()
+        if (!isBtSupported) {
+            // I don't like it but we need to add a small delay to give the `navController`
+            // enough time to be attach to the NavHost
+            delay(duration = 25.milliseconds)
+            appState.navController.navigate(route = Unsupported) {
+                // Pop the main route so that the user cannot return to it
+                popUpTo<Main> { inclusive = true }
+            }
+        } else onSupported()
     }
 }
 
