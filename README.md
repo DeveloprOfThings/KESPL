@@ -35,7 +35,7 @@ kotlin {
         // ... other source sets ie Android, iOS 
         commonMain.dependencies {
             // ... Other common source dependencies
-            implementation("io.github.developrofthings:kespl:0.9.2")
+            implementation("io.github.developrofthings:kespl:0.9.5")
         }
     }
 }
