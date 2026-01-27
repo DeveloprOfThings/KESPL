@@ -4,7 +4,25 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.android.lint)
-    id("dev.mokkery") version "3.0.0"
+    alias(libs.plugins.mokkery)
+    alias(libs.plugins.skie)
+    alias(libs.plugins.kmmbridge)
+}
+
+skie {
+    build {
+        produceDistributableFramework()
+    }
+    features {
+        enableSwiftUIObservingPreview = true
+    }
+}
+
+kmmbridge {
+    gitHubReleaseArtifacts()
+    spm(swiftToolVersion = "5.8") {
+        iOS { v("14") }
+    }
 }
 
 kotlin {
@@ -25,27 +43,25 @@ kotlin {
         }
     }
 
-    val xcfName = "callbacksKit"
+    val xcfName = "KESPLCallbacksKit"
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
+            export(dependency = projects.kespl)
             baseName = xcfName
+            binaryOption("bundleId", "io.github.developrofthings.${xcfName}")
             isStatic = true
         }
     }
-
 
     sourceSets {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                /* Coroutines */
                 implementation(libs.kotlinx.coroutines.core)
-                // Add dependency on "core" KESPL". Use `api` so we can include the "core" KESPL API
-                // to dependents
                 api(projects.kespl)
             }
         }

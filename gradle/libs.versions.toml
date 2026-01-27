@@ -32,6 +32,9 @@ androidx-lifecycle = "2.9.6"
 adaptive = "1.2.0"
 vanniktechMavenPublish = "0.35.0"
 coreSplashScreen = "1.2.0"
+devMokkery = "3.0.0"
+skie = "0.10.9"
+kmmBridge = "1.2.1"
 
 [libraries]
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
@@ -69,13 +72,16 @@ adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptiv
 adaptive-layout = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-layout", version.ref = "adaptive" }
 adaptive-navigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "adaptive" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashScreen" }
-compose-runtime = { module="org.jetbrains.compose.runtime:runtime", version.ref="composeMultiplatform" }
-compose-foundation = { module="org.jetbrains.compose.foundation:foundation", version.ref="composeMultiplatform" }
-compose-material3 = { module="org.jetbrains.compose.material3:material3", version.ref="composeMaterial3" }
-compose-ui = { module="org.jetbrains.compose.ui:ui", version.ref="composeMultiplatform" }
-compose-component-resources= { module="org.jetbrains.compose.components:components-resources", version.ref="composeMultiplatform" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+compose-component-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 
 [plugins]
+mokkery = { id = "dev.mokkery", version.ref = "devMokkery" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
+kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "kmmBridge" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

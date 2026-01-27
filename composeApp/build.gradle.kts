@@ -7,7 +7,13 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    id("co.touchlab.skie") version "0.10.9"
+    alias(libs.plugins.skie)
+}
+
+skie {
+    features {
+        enableSwiftUIObservingPreview = true
+    }
 }
 
 kotlin {
@@ -76,12 +82,6 @@ kotlin {
     // KSP Common sourceSet
     sourceSets.named("commonMain").configure {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
-}
-
-skie {
-    features {
-        enableSwiftUIObservingPreview = true
     }
 }
 

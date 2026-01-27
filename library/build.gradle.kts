@@ -6,12 +6,22 @@ plugins {
     alias(libs.plugins.android.lint)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    id("dev.mokkery") version "3.0.0"
+    alias(libs.plugins.mokkery)
+    alias(libs.plugins.skie)
 }
 
 mokkery {
     ignoreInlineMembers.set(true) // ignores only inline members
     ignoreFinalMembers.set(true)  // ignores final members (inline included)
+}
+
+skie {
+    build {
+        produceDistributableFramework()
+    }
+    features {
+        enableSwiftUIObservingPreview = true
+    }
 }
 
 kotlin {
@@ -44,7 +54,6 @@ kotlin {
     }
 
     val xcfName = "KESPLKit"
-
     listOf(
         iosX64(),
         iosArm64(),
@@ -52,6 +61,8 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = xcfName
+            // Specify CFBundleIdentifier to uniquely identify the framework
+            binaryOption("bundleId", "io.github.developrofthings.${xcfName}")
             isStatic = true
         }
     }
