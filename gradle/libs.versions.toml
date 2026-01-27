@@ -1,5 +1,5 @@
 [versions]
-kespl = "0.9.5"
+kespl = "0.9.51"
 constraintlayoutComposeMultiplatform = "0.6.1"
 datastoreCoreOkio = "1.2.0"
 kotlinxCoroutinesCore = "1.10.2"
