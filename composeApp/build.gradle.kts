@@ -32,6 +32,7 @@ kotlin {
         iosTarget.binaries.framework {
             // Exposes KESPL library to Objective-C/Swift code
             export(dependency = libs.kespl.callbacks)
+            binaryOption("bundleId", "io.github.developrofthings.${xcfName}")
             baseName = xcfName
             isStatic = true
         }
