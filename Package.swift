@@ -1,7 +1,3 @@
-//
-// Created by Jonathan Davis on 1/26/26.
-//
-
 // swift-tools-version:5.8
 import PackageDescription
 
@@ -21,7 +17,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: packageName,
-            path: "./KESPLCallbacksKit/build/XCFrameworks/release/\(packageName).xcframework"
+            path: "./callbacks/build/XCFrameworks/release/\(packageName).xcframework"
         )
         ,
     ]
