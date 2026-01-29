@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -25,7 +26,6 @@ skie {
 }
 
 kotlin {
-
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
@@ -54,6 +54,7 @@ kotlin {
     }
 
     val xcfName = "KESPLKit"
+    val xcf = XCFramework(xcFrameworkName = xcfName)
     listOf(
         iosX64(),
         iosArm64(),
@@ -63,6 +64,7 @@ kotlin {
             baseName = xcfName
             // Specify CFBundleIdentifier to uniquely identify the framework
             binaryOption("bundleId", "io.github.developrofthings.${xcfName}")
+            xcf.add(this)
             isStatic = true
         }
     }

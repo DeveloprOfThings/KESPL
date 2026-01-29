@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -6,7 +7,6 @@ plugins {
     alias(libs.plugins.android.lint)
     alias(libs.plugins.mokkery)
     alias(libs.plugins.skie)
-    alias(libs.plugins.kmmbridge)
 }
 
 skie {
@@ -15,13 +15,6 @@ skie {
     }
     features {
         enableSwiftUIObservingPreview = true
-    }
-}
-
-kmmbridge {
-    gitHubReleaseArtifacts()
-    spm(swiftToolVersion = "5.8") {
-        iOS { v("14") }
     }
 }
 
@@ -44,6 +37,7 @@ kotlin {
     }
 
     val xcfName = "KESPLCallbacksKit"
+    val xcf = XCFramework(xcFrameworkName = xcfName)
     listOf(
         iosX64(),
         iosArm64(),
@@ -53,6 +47,7 @@ kotlin {
             export(dependency = projects.kespl)
             baseName = xcfName
             binaryOption("bundleId", "io.github.developrofthings.${xcfName}")
+            xcf.add(this)
             isStatic = true
         }
     }
