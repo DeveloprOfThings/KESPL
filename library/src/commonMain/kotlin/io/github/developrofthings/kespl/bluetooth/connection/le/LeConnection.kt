@@ -89,7 +89,7 @@ internal class LeConnection(
             if (e is LeConnectionFailed) {
                 // Aborted connection still throw exceptions so we want to consume them here and log
                 // an appropriate error
-                if (_connectionStatus.value == ESPConnectionStatus.Disconnecting) {
+                if (connectionStatus.value == ESPConnectionStatus.Disconnecting) {
                     logger.info(
                         "LeConnection", """Attempted connection with ${v1c.name} was aborted!""".trimMargin()
                     )
@@ -145,7 +145,7 @@ internal class LeConnection(
             client.close()
             // If we didn't enter the disconnecting state we are experiencing an
             // unexpected disconnect ie connection loss
-            if (_connectionStatus.value != ESPConnectionStatus.Disconnecting) onConnectionLost()
+            if (connectionStatus.value != ESPConnectionStatus.Disconnecting) onConnectionLost()
             else onDisconnected()
         }
         .launchIn(this)

@@ -92,8 +92,8 @@ internal class ESPClient(
 
     override val connectionType: V1cType = connection.connectionType
 
-
-    override val valentineOneType: StateFlow<ESPDevice.ValentineOne> = flowController.valentineOneType
+    override val valentineOneType: StateFlow<ESPDevice.ValentineOne> =
+        flowController.valentineOneType
 
     override val v1CapabilityInfo: StateFlow<V1CapabilityInfo> = flowController
         .v1Version
@@ -203,6 +203,8 @@ internal class ESPClient(
         }
     }
 
+    override fun getConnectedDevice(): V1connection? = _connection.connectedDevice.value
+
     override suspend fun connect(
         connectionStrategy: ConnectionStrategy,
         scanDurationMillis: Duration,
@@ -310,13 +312,13 @@ internal class ESPClient(
     override fun connectAsync(
         connectionStrategy: ConnectionStrategy,
         scanDurationMillis: Duration,
-    ): Job =
+    ): Deferred<Boolean> =
         /*
             We want to proxy through to [ESPClient#connect()] instead of the
             [IConnection#connectAsync] part of IConnection because the ESPClient will take care of
             bookkeeping details such as persisting the last device.
         */
-        connection.connectionScope.launch {
+        connection.connectionScope.async {
             connect(
                 connectionStrategy = connectionStrategy,
                 scanDurationMillis = scanDurationMillis,

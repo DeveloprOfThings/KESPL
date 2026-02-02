@@ -73,7 +73,11 @@ abstract class BaseConnection internal constructor(
 
     override var canEchoQueue: Boolean by _useEchoQueue
 
-    protected val _connectionStatus = flowController.connectionStatus
+    private var _connectedDevice: MutableStateFlow<V1connection?> = MutableStateFlow(null)
+
+    override val connectedDevice: StateFlow<V1connection?> = _connectedDevice.asStateFlow()
+
+    private val _connectionStatus = flowController.connectionStatus
 
     override val connectionStatus: StateFlow<ESPConnectionStatus> = _connectionStatus.asStateFlow()
 
@@ -136,7 +140,10 @@ abstract class BaseConnection internal constructor(
         ) return false
         _connectionStatus.emit(ESPConnectionStatus.Connecting)
         return performConnection(v1c = v1c, directConnect = directConnect).also {
-            if (it) onConnectionEstablished()
+            if (it) {
+                _connectedDevice.emit(value = v1c)
+                onConnectionEstablished()
+            }
             else {
                 _connectionStatus.emit(ESPConnectionStatus.ConnectionFailed)
                 // We want to quickly transition into the disconnected state
@@ -270,6 +277,7 @@ abstract class BaseConnection internal constructor(
     }
 
     protected open suspend fun cleanupForDisconnection() {
+        _connectedDevice.emit(value = null)
         _v1Version.value = 0.0
 
         _tempValentineOneType.value = ESPDevice.ValentineOne.Unknown
@@ -319,13 +327,15 @@ abstract class BaseConnection internal constructor(
     }
 
     protected suspend fun onConnectionLost() {
-        _connectionStatus.emit(ESPConnectionStatus.ConnectionLost)
         cleanupForDisconnection()
+        // Emit to the rest of the library we've lost the connection
+        _connectionStatus.emit(ESPConnectionStatus.ConnectionLost)
     }
 
     protected suspend fun onDisconnected() {
-        _connectionStatus.emit(ESPConnectionStatus.Disconnected)
         cleanupForDisconnection()
+        // Emit to the rest of the library we've disconnected
+        _connectionStatus.emit(ESPConnectionStatus.Disconnected)
     }
 
     private fun ByteArray.v1Type(): ESPDevice.ValentineOne =

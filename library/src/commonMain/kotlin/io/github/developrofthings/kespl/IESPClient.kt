@@ -35,6 +35,11 @@ import kotlinx.coroutines.flow.map
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
+/**
+ * Interface defining the contract for communicating with ESP capable devices.
+ * This interface contains properties and functions for reading state and communicating w/ all
+ * devices attached to the ESP bus.
+ */
 interface IESPClient {
 
     //region State
@@ -281,6 +286,11 @@ interface IESPClient {
 
     //region Connection & Device Store
     /**
+     * The [V1connection] maintaining the active connection with the ESP bus.
+     * @return the connected [V1connection] if a connection is established (active), null otherwise.
+     */
+    fun getConnectedDevice(): V1connection?
+    /**
      * Attempts to connect to a Valentine One device using the specified connection strategy and
      * scan duration.
      *
@@ -341,9 +351,9 @@ interface IESPClient {
      * [ConnectionStrategy.LastThenStrongest].
      * @param scanDurationMillis The maximum duration to scan for devices. Defaults to
      * [defaultScanDuration].
-     * @return A [Job] representing the asynchronous connection operation. You can use this job to
-     * cancel the connection attempt or await its completion (though the connection status is
-     * typically observed via [connectionStatus] flow).
+     * @return A [Deferred] which will resolve to `true` if the connection was successfully
+     * established, or `false` otherwise. You can `await()` this Deferred to get the result, or
+     * handle its completion in other ways.
      * @throws BTUnsupported If the selected connection type requires Bluetooth Classic and it's not
      * supported on the device.
      * @throws LeUnsupported If the selected connection type requires Bluetooth Low Energy and it's
@@ -356,7 +366,7 @@ interface IESPClient {
     fun connectAsync(
         connectionStrategy: ConnectionStrategy = ConnectionStrategy.LastThenStrongest,
         scanDurationMillis: Duration = defaultScanDuration,
-    ): Job
+    ): Deferred<Boolean>
 
     /**
      * Asynchronously attempts to connect to the specified [V1connection]. This function returns
@@ -644,7 +654,7 @@ interface IESPClient {
      * @param userBytes Desired Valentine One user configuration.
      * @param verifyBytes `true` if the client should read back the Valentine One's user bytes to
      * verify the values written were set.
-     * NOTE: This will fail if the [V18UserSettings.UserByte2.fForceLegacyDisplayDisabled] bit is set.
+     * NOTE: This will fail if the [V18UserSettings.UserByte2.forceLegacyDisplayDisabled] bit is set.
      * @param timeout The timeout the client should wait before timing out this operation.
      *
      * @return An [ESPResponse] indicating the outcome:
@@ -656,7 +666,7 @@ interface IESPClient {
      * [ESPFailure.TimedOut], [ESPFailure.NotConnected], etc.
      *
      * @see UserSettings For the structure of user settings.
-     * @see V18UserSettings.UserByte2.fForceLegacyDisplayDisabled For the specific bit that can cause verification
+     * @see V18UserSettings.UserByte2.forceLegacyDisplayDisabled For the specific bit that can cause verification
      * failure.
      * @see ESPResponse For the sealed class representing the outcome of ESP operations.
      * @see ESPFailure For possible error types.
@@ -679,7 +689,7 @@ interface IESPClient {
      * @param verifyBytes `true` if the client should read back the device's user bytes to
      * verify the values written were successfully set.
      * NOTE: When `destination` is [ESPDevice.ValentineOne], this verification may fail if the
-     * [V18UserSettings.UserByte2.fForceLegacyDisplayDisabled] bit is set in the `userBytes`.
+     * [V18UserSettings.UserByte2.forceLegacyDisplayDisabled] bit is set in the `userBytes`.
      * @param timeout The maximum duration the client should wait before timing out this operation.
      * Defaults to [defaultLongRequestTimeout] as V1 operations can sometimes take longer.
      *
@@ -694,7 +704,7 @@ interface IESPClient {
      *     [ESPFailure.NotSupported], etc.
      *
      * @see UserSettings For the structure of user settings.
-     * @see V18UserSettings.UserByte2.fForceLegacyDisplayDisabled For the specific bit that can cause verification
+     * @see V18UserSettings.UserByte2.forceLegacyDisplayDisabled For the specific bit that can cause verification
      * failure with Valentine One devices.
      * @see ESPResponse For the sealed class representing the outcome of ESP operations.
      * @see ESPFailure For possible error types.
@@ -1711,7 +1721,7 @@ interface IESPClient {
         )
 
         /**
-         * Get a demo client.
+         * Returns a client setup for a "demo" connection.
          *
          * @param scope The coroutine scope to use.
          * @return The demo client.

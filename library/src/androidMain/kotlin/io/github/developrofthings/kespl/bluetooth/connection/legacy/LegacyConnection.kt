@@ -121,7 +121,7 @@ internal class LegacyConnection(
                 }
             } catch (_: IOException) {
                 // Make sure we're still connected
-                if (isActive && _connectionStatus.value != ESPConnectionStatus.Connected) return@launch
+                if (isActive && connectionStatus.value != ESPConnectionStatus.Connected) return@launch
             }
         }
     }

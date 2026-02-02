@@ -92,6 +92,10 @@ class FakeESPClient(
     override val connectionType: V1cType
         get() = TODO("Intentionally NOT Implemented")
 
+    override fun getConnectedDevice(): V1connection? {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun connect(
         connectionStrategy: ConnectionStrategy,
         scanDurationMillis: Duration
@@ -113,7 +117,7 @@ class FakeESPClient(
     override fun connectAsync(
         connectionStrategy: ConnectionStrategy,
         scanDurationMillis: Duration
-    ): Job {
+    ): Deferred<Boolean> {
         TODO("Intentionally NOT Implemented")
     }
 

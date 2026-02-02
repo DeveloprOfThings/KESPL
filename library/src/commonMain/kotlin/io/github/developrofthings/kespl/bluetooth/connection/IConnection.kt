@@ -17,48 +17,105 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * Interface defining the contract for a connection to an ESP device.
- * This interface provides properties and methods to manage the connection lifecycle,
- * send and receive data, and observe connection status and device information.
+ * Interface defining the contract for a connection to an ESP (Extended Serial Protocol) device.
+ *
+ * This interface provides properties and functions to manage the connection lifecycle,
+ * facilitate data exchange, and observe the real-time status and hardware details of the
+ * connected Valentine One device.
  */
 interface IConnection {
     /**
-     * Controls if the connection should track echo ESP data.
+     * Controls whether the connection should track echoed ESP data.
+     *
+     * When enabled, the connection maintains a queue of outgoing requests to match
+     * against incoming echo responses from the ESP bus.
      */
     var canEchoQueue: Boolean
 
+    /**
+     * The [CoroutineScope] associated with this connection.
+     * This scope is used to manage asynchronous tasks related to the connection's lifecycle,
+     * such as data processing and monitoring.
+     */
     val connectionScope: CoroutineScope
 
+    /**
+     * A [StateFlow] representing the current [ESPConnectionStatus] of the connection.
+     */
     val connectionStatus: StateFlow<ESPConnectionStatus>
 
     /**
-     * Stream of ESP data received from the connected [V1connection].
+     * A [StateFlow] representing the currently connected [V1connection].
+     *
+     * A `null` value indicates that the [IConnection] is not currently connected to a device.
+     */
+    val connectedDevice: StateFlow<V1connection?>
+
+    /**
+     * A [Flow] of raw ESP data bytes received from the connected [V1connection].
      */
     val espData: Flow<ByteArray>
 
     /**
-     * Stream of 'No Data' notifications that are emitted after [staleDataWatchDogTimeout]
-     * milliseconds has passed without any ESP data being received from the connected [V1connection].
+     * A [Flow] of 'No Data' notifications that are emitted after [staleDataWatchDogTimeout]
+     * has passed without any ESP data being received from the connected [V1connection].
      */
     val noData: Flow<Unit>
 
     /**
-     * Stream of notifications received from the connected [V1connection].
+     * A [Flow] of notifications received from the connected [V1connection].
+     *
      * Note: this is presently only used by [DemoConnection].
      */
     val notificationData: Flow<String>
 
+    /**
+     * A [StateFlow] indicating whether the Valentine One has enabled time-slicing on the ESP bus.
+     *
+     * When active, devices attached to the bus are only permitted to communicate during their
+     * respective assigned time-slices. This state is determined by observing the `TSHoldOff`
+     * bit within `InfDisplayData` packets.
+     *
+     * @see io.github.developrofthings.kespl.packet.data.displayData.isTimeSlicing
+     * @see io.github.developrofthings.kespl.packet.data.displayData.DisplayData.isTimeSlicing
+     */
     val isTimeSlicing: StateFlow<Boolean>
 
-    val connectionType: V1cType
-
-    val hasV1Version: Boolean
-
+    /**
+     * A [StateFlow] representing the firmware version of the connected Valentine One device.
+     *
+     * This value is determined through the ESP protocol and provides the specific
+     * version number (e.g., 3.8945) of the hardware.
+     */
     val v1Version: StateFlow<Double>
 
-    val hasDeterminedV1Type: Boolean
-
+    /**
+     * A [StateFlow] representing the specific [ESPDevice.ValentineOne] hardware type.
+     *
+     * The type is determined based on the device's capabilities, such as support for ESP and or
+     * checksums. __Note:__ the Valentine One may support checksums but if operating in "Legacy" the
+     * library will report [ESPDevice.ValentineOne.Legacy].
+     */
     val v1Type: StateFlow<ESPDevice.ValentineOne>
+
+    /**
+     * The type of the connection, indicating the underlying communication protocol.
+     *
+     * This property specifies whether the connection is Bluetooth LE, legacy Bluetooth,
+     * or a demonstration/mock connection, as defined by the [V1cType] enum.
+     */
+    val connectionType: V1cType
+
+    /**
+     * Indicates whether the firmware version of the connected Valentine One device has been determined.
+     */
+    val hasV1Version: Boolean
+
+    /**
+     * Indicates whether the connection has successfully identified the [ESPDevice.ValentineOne] of
+     * the connected Valentine One.
+     */
+    val hasDeterminedV1Type: Boolean
 
     /**
      * Attempts to establish a connection with the provided [V1connection].
@@ -109,7 +166,17 @@ interface IConnection {
     }
 }
 
+/**
+ * The default duration to wait for a write operation or prerequisite state (such as
+ * determining the V1 type) to complete before timing out.
+ */
 val defaultWriteTimeout: Duration = 2000.milliseconds
+/**
+ * The duration of inactivity allowed before the connection is considered to have "no data."
+ *
+ * If no ESP data is received from the connected device within this timeframe,
+ * a notification is emitted via the [IConnection.noData] flow.
+ */
 val staleDataWatchDogTimeout: Duration = 1500.milliseconds
 
 internal const val LE_CONNECTION_QUALIFIER: String = "LE_CONNECTION_QUALIFIER"

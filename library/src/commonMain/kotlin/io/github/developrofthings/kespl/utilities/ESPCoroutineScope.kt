@@ -11,4 +11,4 @@ fun getDefaultScope(
     parent: Job? = null
 ): CoroutineScope = CoroutineScope(dispatcher + SupervisorJob(parent))
 
-internal val defaultESPScope = getDefaultScope()
+val defaultESPScope = getDefaultScope()

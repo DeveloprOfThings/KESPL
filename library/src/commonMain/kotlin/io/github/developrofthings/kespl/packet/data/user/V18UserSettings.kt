@@ -198,7 +198,7 @@ value class V18UserSettings(override val userBytes: ByteArray) : UserSettings {
         /**
          * Indicates if the forcing Legacy display is disabled.
          */
-        val fForceLegacyDisplayDisabled: Boolean get() = get(4)
+        val forceLegacyDisplayDisabled: Boolean get() = get(4)
 
         /**
          * Unused; always 1.
