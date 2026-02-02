@@ -20,7 +20,7 @@ suspend fun IConnection.connect(v1c: V1connection): Boolean =
 /**
  * Scans for nearby [V1connection]s based on the provided [scanMode].
  */
-suspend fun IConnection.scan(scanMode: ESPScanMode): Flow<V1connectionScanResult> =
+suspend fun IConnection.scan(): Flow<V1connectionScanResult> =
     scan(scanMode = ESPScanMode.LowPower)
 
 /**
