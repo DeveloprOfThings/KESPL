@@ -3,7 +3,6 @@
 package io.github.developrofthings.kespl.packet.data.displayData
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * Signal Strength Bar Byte definition
@@ -23,8 +22,7 @@ import kotlin.jvm.JvmInline
  *
  * Note 1: This feature is only available on V4.1018 and higher
  */
-@JvmInline
-value class SignalStrengthBarGraph(private val data: Byte) {
+data class SignalStrengthBarGraph(private val data: Byte) {
     /**
      * Returns the bit at the specified index in the signal strength bar graph data.
      */

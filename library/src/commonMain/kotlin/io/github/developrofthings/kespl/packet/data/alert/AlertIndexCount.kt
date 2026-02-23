@@ -1,7 +1,6 @@
 package io.github.developrofthings.kespl.packet.data.alert
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * Represents the alert index count data.
@@ -10,8 +9,7 @@ import kotlin.jvm.JvmInline
  *
  * @property data The raw byte data representing the alert index count.
  */
-@JvmInline
-value class AlertIndexCount(private val data: Byte) {
+data class AlertIndexCount(private val data: Byte) {
     /**
      * Returns the bit at the specified index in the alert index count data.
      */
@@ -28,6 +26,6 @@ value class AlertIndexCount(private val data: Byte) {
     val index: Int get() = ((data.toInt() and ALERT_INDEX_MASK) shr 4)
 }
 
-internal const val ALERT_INDEX_MASK: Int = 0xF0
+private const val ALERT_INDEX_MASK: Int = 0xF0
 
-internal const val ALERT_COUNT_MASK: Int = 0x0F
+private const val ALERT_COUNT_MASK: Int = 0x0F

@@ -3,7 +3,6 @@
 package io.github.developrofthings.kespl.packet.data.alert
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * This class represents the band arrow data for a given alert within an alert table.
@@ -14,8 +13,7 @@ import kotlin.jvm.JvmInline
  *
  * @property data The raw byte data for the band arrow.
  */
-@JvmInline
-value class BandArrow(private val data: Byte) {
+data class BandArrow(private val data: Byte) {
     /**
      * Returns the bit at the specified index in the band arrow data.
      */

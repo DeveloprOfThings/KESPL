@@ -1,6 +1,6 @@
 # KESPL - Kotlin Extended Serial Protocol Library
 
-**K**otlin **E**extended **S**erial **P**rotocol **L**ibrary provides a modern, suspending API for 
+**K**otlin **E**xtended **S**erial **P**rotocol **L**ibrary provides a modern, suspending API for 
 two-way communication. It enables developers to build cross-platform mobile apps for the Valentine 
 One (V1) radar locator and other ESP-enabled devices manufactured by Valentine Research Inc. 
 KESPL makes extensive use of Kotlin's [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) 
@@ -11,21 +11,21 @@ functions for all possible ESP "requests". (see: _**ESP Packet Quick Reference**
 Serial Protocol User Guide**).
 
 ## 📱 Demo
-**KESPL** was built using [Kotlin Multiplatform](https://www.jetbrains.com/kotlin-multiplatform/) (**KMP**), it supports both Android and iOS
-using the native Bluetooth APIs on both platforms. Sample integrations of **KESPL** have been provided
-for both platforms as well. Since **KESPL** was built using **KMP**, the sample apps were
-able to be built using [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform)
-(CMP). Compose Multiplatform is a declarative framework for sharing UI code across multiple
-platforms with Kotlin. It is based on the similarly named declarative framework used in modern
-Android development, [Jetpack Compose](https://developer.android.com/compose). **CMP** is in active
-development by a joint collaboration of [Jetbrains](https://www.jetbrains.com/) and the open-source
-community.
+**KESPL** was built using [Kotlin Multiplatform](https://www.jetbrains.com/kotlin-multiplatform/) 
+(**KMP**). It supports both Android and iOS using the native Bluetooth APIs on both platforms. 
+Sample integrations of **KESPL** have been provided for both platforms as well. Since **KESPL** was 
+built using **KMP**, the sample apps were able to be built using 
+[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) (CMP). Compose 
+Multiplatform is a declarative framework for sharing UI code across multiple platforms with Kotlin. 
+It is based on the similarly named declarative framework used in modern Android development, 
+[Jetpack Compose](https://developer.android.com/compose). **CMP** is in active development by a 
+joint collaboration of [Jetbrains](https://www.jetbrains.com/) and the open-source community.
 
 ### Pixel 7 Pro
-<img src="/artwork/pixel7pro_demo.gif" width="35%" height="35%"/>
+<img src="/artwork/pixel7pro_demo.gif" width="35%"/>
 
 ### iPad
-<img src="/artwork/ipad_demo.gif" width="75%" height="75%"/>
+<img src="/artwork/ipad_demo.gif" width="75%"/>
 
 ## 🚀 Getting Started (Installation)
 ```Kotlin
@@ -43,7 +43,7 @@ kotlin {
 
 ## ⚙️ Quick Usage - Android Example
 Before using **KESPL**, the library must be initialized via a call to `IESPClient.init(ESPContext)`, 
-passing in platform `ESPContext` instance. It's recommended to initialize the library at startup 
+passing in a platform `ESPContext` instance. It's recommended to initialize the library at startup 
 via a `android.app.Application` subclass:
 
 ```Kotlin
@@ -71,11 +71,7 @@ class ExampleViewModel: ViewModel() {
 
     fun connect() {
         viewModelScope.launch {
-            val client = IESPClient
-                // Auto select the "best" connection based on device capabilities
-                .getClient(preference = V1ConnectionTypePreference.Auto)
-            val success = client
-                .connect(
+            val success = client.connect(
                     connectionStrategy = ConnectionStrategy.LastThenStrongest,
                     scanDurationMillis = 5.seconds
                 )
@@ -97,14 +93,14 @@ class ExampleViewModel: ViewModel() {
 > [!NOTE]
 > for iOS/KMP Developers: While this example shows Android context initialization, the rest of
 > the suspending API usage within viewModelScope.launch is identical across all Kotlin Multiplatform 
-> targets._
+> targets.
 
 ### V1 Capabilities
 To determine capabilities/features of the attached Valentine One, developers can use the 
 `IESPClient.v1CapabilityInfo` state flow which contains the most recently "calculated" 
-`V1CapabilityInfo`. This class is made up of `Boolean` flags that are set based on firmware version 
-of a Valentine One. **KESPL** automatically requests & caches (`StateFlow`) the V1 firmware on 
-connect. 
+`V1CapabilityInfo`. This class is made up of `Boolean` flags that are set based on the firmware 
+version of the Valentine One. **KESPL** automatically requests & caches (`StateFlow`) the V1 
+firmware on connect. 
 
 The following example can be used to determine if the attached Valentine One is a "Gen2":
 ```Kotlin
@@ -135,13 +131,12 @@ desired data. As an example, here is how you'd retrieve a version from an `respV
 <details>
 <summary>Flows</summary>
 
-Kotlin's `Flow` API is a foundational building block around which **KESPL**'s suspending API is built.
-As "ESP" data is received via a connected `V1connection`, it is verified validity and then is 
-emitted into an internal `Flow` that `IESPClient` performs 
-fairly complex filtering and transformations to convert the raw `byte` data into the requested data.
-For developer convenience, `IESPClient` exposes a flow of `ESPPacket` as well as several others to 
-to observe `AlertData`, `DisplayData`, and stateful information such as `V1Type` and Valentine One 
-capabilities.
+Kotlin's `Flow` API is a foundational building block around which **KESPL**'s suspending API is 
+built. As "ESP" data is received via a connected `V1connection`, its validity is verified and then 
+is emitted into an internal `Flow` that `IESPClient` performs fairly complex filtering and 
+transformations to convert the raw `byte` data into the requested data. For developer convenience, 
+`IESPClient` exposes a flow of `ESPPacket` as well as several others to observe `AlertData`, 
+`DisplayData`, and stateful information such as `V1Type` and Valentine One capabilities.
 
 ### Stateful
 
@@ -160,14 +155,14 @@ capabilities.
 
 ### ESP Data
 
-| Events                            | Explanation                                                    |
-|-----------------------------------|----------------------------------------------------------------|
-| `IESPClient.packets`              | Stream of `ESPPacket` received from the **ESP bus**            |
-| `IESPClient.displayData`          | Stream of `DisplayData` received from the **ESP bus**          |
-| `IESPClient.alertTable`           | Stream of "complete" alert tables                              |
-| `IESPClient.alertTableClosable`   | Same as `IESPClient.alertTable` but collection starts sending  |
-| `IESPClient.priorityAlert`        | Detected "priority" `AlertData` from Valentine One alert table |
-| `IESPClient.junkAlerts`           | Detected "junk" `AlertData` from Valentine One alert table     |
+| Events                            | Explanation                                                                 |
+|-----------------------------------|-----------------------------------------------------------------------------|
+| `IESPClient.packets`              | Stream of `ESPPacket` received from the **ESP bus**                         |
+| `IESPClient.displayData`          | Stream of `DisplayData` received from the **ESP bus**                       |
+| `IESPClient.alertTable`           | Stream of "complete" alert tables                                           |
+| `IESPClient.alertTableClosable`   | Same as `IESPClient.alertTable` but collection triggers `AlertData` receipt |
+| `IESPClient.priorityAlert`        | Detected "priority" `AlertData` from Valentine One alert table              |
+| `IESPClient.junkAlerts`           | Detected "junk" `AlertData` from Valentine One alert table                  |
 
 `IESPClient.packets` should be considered a "core" `Flow` for ESP observation. It is effectively a 
 direct "wire" upon which all "ESP" data received via the **ESP bus** can be observed with no 
@@ -197,8 +192,8 @@ and [`.map {...}`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-corouti
 ### Custom Flow Example
 #### Simple
 Below is **very** crude `Flow` to observe the Valentine One's logic mode prior to firmware 
-version **V4.1028**, where latter versions contain logic mode bits were added to 
-`infDisplayData.Aux1` byte:  
+version **V4.1028**, where later firmware contain dedicated logic mode bits in the 
+`infDisplayData.Aux1` `byte`:  
 ```Kotlin
 espClient
     .packets
@@ -263,6 +258,9 @@ IV1cScanner
         // Do something with result
     }
 ```
+`IV1cScanner.getScanner(...)` will return a cold `Flow` that will automatically cancel scanning 
+when collection stops or the parent coroutine scope is cancelled.
+
 ## 🔌 Connection
 There are multiple options for establishing a connection with a `V1connection`. 
 The `IESPClient` contains two `connect(...)` overloads and that affect how a connection is 
@@ -276,7 +274,7 @@ the following rules:
 * `ConnectionStrategy.Strongest` - `V1connection` with strongest _**RSSI**_ at end of scan window
 * `ConnectionStrategy.LastThenStrongest` - The last connected `V1connection` or  with strongest _**RSSI**_ if it cannot be found
 
-`ConnectionStrategy.LastThenStrongest` is the recommended strategy as it's offers functionality most
+`ConnectionStrategy.LastThenStrongest` is the recommended strategy as it offers functionality most
 users would want; reconnect to last used `V1connection` or connect to the strongest one available. 
 
 If developers prefer to handle `V1connection` discovery themselves `IESPClient` has a 
@@ -300,7 +298,7 @@ library (`kespl-callbacks`) is available. Currently, the library offers 6 _liste
 
 > [!NOTE]
 > Since `IESPClient.connectionStatus` is a `StateFlow`, **initial** registration of a
-> `ESPConnectionStatusListener` will cause it's `onConnectionStatusChange(...)` function to be 
+> `ESPConnectionStatusListener` will cause its `onConnectionStatusChange(...)` function to be 
 > invoked with the client's current connection status (initially 
 > `ESPConnectionStatus.Disconnected`). 
 
@@ -311,12 +309,12 @@ supported.
 Add the following declaration to your app-module's `build.gradle`/`build.gradle.kts` dependency 
 block:
 ```Kotlin
-implementation("io.github.developrofthings:kespl-callbacks:0.9.5")
+implementation("io.github.developrofthings:kespl-callbacks:0.9.6")
 ```
 
 The callback registration functions have been declared as extension functions on `IESPClient`. Each 
 callback has two deregistration functions. One for unregistering a single callback and another for 
-clear all registered callbacks ie `unregisterConnectionListeners()`.
+clearing all registered callbacks ie `unregisterConnectionListeners()`.
 
 > [!NOTE]
 > Removing all callbacks will cancel `Flow` collection.
@@ -328,13 +326,96 @@ espClient.registerConnectionListener { status ->
     // TODO do something w/ status
 }
 
-...
 // Use this function with passing "inline" listener ie lambda
 espClient.unregisterConnectionListeners()
 
 // or use
-espClient.unregisterConnectionListener(listener = ...)
+espClient.unregisterConnectionListener(listener = listener)
 ```
+
+## iOS Installation (SPM)
+If you'd prefer to keep things native and instead manually include **KESPL** by itself with no 
+dependencies on **CMP**, the library is available to install via SPM
+
+### Swift Package Manager
+
+To add **KESPL** to your Xcode project:
+
+1. Go to **File > Add Packages...**
+2. Enter the repository URL:
+   `https://github.com/DeveloprOfThings/KESPL-iOS.git`
+3. Select the version or branch you wish to use.
+4. Link the library to your desired target.
+
+Here is a bare-minimum implementation to connect to first available **V1 Gen2**/**V1connection** and 
+read the latest `InfDisplayData`.
+
+```swift
+import SwiftUI
+import KESPLKit
+
+struct ContentView: View {
+
+    private var _client = IESPClientCompanion
+        .shared
+        .getClient(connectionType: V1cType.le)
+
+    @State private var _discoveredDevice: V1connection? = nil
+    @State private var _connected: Bool? = nil
+    @State private var _displayData: String = "Waiting for display data..."
+
+    var body: some View {
+        VStack {
+            if let connected = _connected {
+                if(!connected) {
+                    Text("Failed to connect to V1c 😢...")
+
+                    Button("Retry"){
+                        Task {
+                            await connect2FirstV1()
+                        }
+                    }
+                }
+                else {
+                    Text("Connected to V1: \(_client.getConnectedDevice()!.name)")
+                    Text(_displayData)
+                }
+            } else { // Connecting
+                Text("Discovering V1c...")
+            }
+        }
+        .padding()
+        .task {
+            // Connect to the first V1 available
+            await connect2FirstV1()
+        }
+    }
+
+    func connect2FirstV1() async {
+        if let connected = try? await _client.connect(connectionStrategy: ConnectionStrategy.first)
+            .boolValue {
+            if(connected) {
+                _connected = true
+                Task {
+                    for await infDisplayData in _client.displayData {
+                        _displayData = "InfDisplayData: \(infDisplayData.bytes.toHexString())"
+                    }
+                }
+
+            } else {
+                _connected = false
+            }
+        }
+    }
+}
+```
+
+Using the **KESPL** from Swift/Objective-C should be very similar to using the library from an 
+Android project (benefit of KMP 😉). The library utilizes "Swift Kotlin Interface Enhancer" 
+[(SKIE)](https://skie.touchlab.co/) to improve support for Kotlin. That means several of Kotlin's 
+modern features such as Enums, Sealed Classes, Default Arguments, Global functions, Coroutines & 
+Flows, and more have equivalent support in Swift. For example, Coroutines & Flows are exposed to 
+Swift calling code as `async` functions and `AsyncSequence` respectively.
 
 ## √ ESP Specification
 **KESPL** is based on **v.3.015** of the ESP Specification which can be found on the official Github 
@@ -354,4 +435,4 @@ KESPL is distributed under the **MIT License**. See [LICENSE](LICENSE) for more 
 > inspired by the implementation in the **Kotlin-BLE-Library** by Nordic Semiconductor. While 
 > implementation used in KESPL written from scratch (**NO COPY & PASTE**), their original project 
 > (licensed under the **BSD-3-Clause license**) was invaluable. You can find the original project 
-> [here]([https://github.com/NordicSemiconductor/Kotlin-BLE-Library]).
+> [here](https://github.com/NordicSemiconductor/Kotlin-BLE-Library).

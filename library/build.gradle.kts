@@ -24,7 +24,7 @@ skie {
         enableSwiftUIObservingPreview = true
     }
 }
-
+val xcfName = "KESPLKit"
 kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
@@ -53,7 +53,6 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
-    val xcfName = "KESPLKit"
     val xcf = XCFramework(xcFrameworkName = xcfName)
     listOf(
         iosX64(),
@@ -128,6 +127,33 @@ kotlin {
     sourceSets.named("commonMain").configure {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
+}
+
+val cleanKESPLIOS = tasks.register<Delete>("cleanKESPLIOS") {
+    group = "distribution"
+    description = "Deletes existing $xcfName.xcframework/"
+    delete(layout.projectDirectory.dir("../../KESPL-iOS/${xcfName}.xcframework/"))
+}
+
+val copyXCFramework = tasks.register<Copy>("copyXCFramework") {
+    dependsOn(cleanKESPLIOS) // Ensure deletion happens first
+    group = "distribution"
+    description = "Copies the build/../release/$xcfName.xcframework/ to KESPL-IOS directory"
+
+
+    // 1. Source: Your project's src directory
+    from(layout.buildDirectory.dir("XCFrameworks/release/")) {
+        include("${xcfName}.xcframework/**")
+    }
+
+    // 2. Destination: Use ".." to go up one level from the project root
+    // This will create a folder named 'external-backup' next to your project folder
+    into(layout.projectDirectory.dir("../../KESPL-iOS"))
+}
+
+// Replace 'test' with whatever task you want to trigger this flow
+tasks.named("assemble${xcfName}XCFramework") {
+    finalizedBy(copyXCFramework)
 }
 
 // KSP Tasks

@@ -8,7 +8,6 @@ import io.github.developrofthings.kespl.PACK_ID_IDX
 import io.github.developrofthings.kespl.PAYLOAD_LEN_IDX
 import io.github.developrofthings.kespl.PAYLOAD_START_IDX
 import io.github.developrofthings.kespl.getPacketId
-import kotlin.jvm.JvmInline
 
 /**
  * Well structured data packet used for all ESP communication. A packet consist of 6 framing bytes
@@ -46,8 +45,7 @@ import kotlin.jvm.JvmInline
  *
  * __Thin-wrapper around [ByteArray]__
  */
-@JvmInline
-value class ESPPacket(val bytes: ByteArray) {
+data class ESPPacket(val bytes: ByteArray) {
 
     /**
      * 8-bit value indicating the length of this packet's payload (includes checksum).
@@ -151,4 +149,35 @@ value class ESPPacket(val bytes: ByteArray) {
     fun copy(): ESPPacket = ESPPacket(bytes.copyOf())
 
     override fun toString(): String = bytes.toHexString()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as ESPPacket
+
+        if (!bytes.contentEquals(other.bytes)) return false
+        if (payloadLength != other.payloadLength) return false
+        if (packetIdentifierByte != other.packetIdentifierByte) return false
+        if (originatorIdentifierByte != other.originatorIdentifierByte) return false
+        if (destinationIdentifierByte != other.destinationIdentifierByte) return false
+        if (checksum != other.checksum) return false
+        if (packetIdentifier != other.packetIdentifier) return false
+        if (originatorIdentifier != other.originatorIdentifier) return false
+        if (destinationIdentifier != other.destinationIdentifier) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = bytes.contentHashCode()
+        result = 31 * result + payloadLength
+        result = 31 * result + packetIdentifierByte
+        result = 31 * result + originatorIdentifierByte
+        result = 31 * result + destinationIdentifierByte
+        result = 31 * result + checksum
+        result = 31 * result + packetIdentifier.hashCode()
+        result = 31 * result + originatorIdentifier.hashCode()
+        result = 31 * result + destinationIdentifier.hashCode()
+        return result
+    }
 }

@@ -150,7 +150,7 @@ class IESPClientTest {
 
         val infDisplayDataAlt = createInfDisplayDataPacket(
             payload = defaultDisplayPayload
-                .clone()
+                .copyOf()
                 .also { it.fill(0xFF.toByte()) }
         )
         _espData.emit(value = infDisplayDataAlt)  // Event 2 (Should be ignored)
@@ -173,7 +173,7 @@ class IESPClientTest {
 
         val infDisplayDataAlt = createInfDisplayDataPacket(
             payload = defaultDisplayPayload
-                .clone()
+                .copyOf()
                 .also { it.fill(0xFF.toByte()) }
         )
         _espData.emit(value = infDisplayDataAlt)  // Event 2 (Should be ignored)
@@ -196,7 +196,7 @@ class IESPClientTest {
 
         val infDisplayDataAlt = createInfDisplayDataPacket(
             payload = defaultDisplayPayload
-                .clone()
+                .copyOf()
                 .also { it.fill(0xFF.toByte()) }
         )
         _espData.emit(value = infDisplayDataAlt)  // Event 2 (Should be ignored)
@@ -225,7 +225,7 @@ class IESPClientTest {
 
         val infDisplayDataAlt = createInfDisplayDataPacket(
             payload = defaultDisplayPayload
-                .clone()
+                .copyOf()
                 .also { it.fill(0xFF.toByte()) }
         )
         _espData.emit(value = infDisplayDataAlt) // Event 2 (Should be ignored)

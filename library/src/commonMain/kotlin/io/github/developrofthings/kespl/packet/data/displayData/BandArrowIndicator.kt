@@ -5,7 +5,6 @@ package io.github.developrofthings.kespl.packet.data.displayData
 import io.github.developrofthings.kespl.utilities.extensions.primitive.get
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
 import io.github.developrofthings.kespl.utilities.extensions.primitive.last
-import kotlin.jvm.JvmInline
 
 /**
  * Band and Arrow Indicator Byte definition
@@ -25,8 +24,7 @@ import kotlin.jvm.JvmInline
  *
  * Note 1: This feature is only available on V4.1018 and higher
  */
-@JvmInline
-value class BandArrowIndicator(val data: Byte) {
+data class BandArrowIndicator(val data: Byte) {
 
     /**
      * Returns the bit at the specified index in the band arrow indicator data.

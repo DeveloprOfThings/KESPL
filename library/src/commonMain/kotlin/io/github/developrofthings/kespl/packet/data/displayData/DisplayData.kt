@@ -1,12 +1,9 @@
 package io.github.developrofthings.kespl.packet.data.displayData
 
-import kotlin.jvm.JvmInline
-
 /**
  * Display information needed to rebuild the front panel display of a Valentine One.
  */
-@JvmInline
-value class DisplayData(val bytes: ByteArray) {
+data class DisplayData(val bytes: ByteArray) {
 
     /**
      * Returns the byte at the specified index in the display data.
@@ -240,6 +237,66 @@ value class DisplayData(val bytes: ByteArray) {
 
     @Suppress("unused")
     val bogeyCounterMode: V1Mode get() = bogeyCounter7SegmentImage1.mode
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DisplayData
+
+        if (!bytes.contentEquals(other.bytes)) return false
+        if (isSoft != other.isSoft) return false
+        if (isTimeSlicing != other.isTimeSlicing) return false
+        if (isSearchingForAlerts != other.isSearchingForAlerts) return false
+        if (isDisplayOn != other.isDisplayOn) return false
+        if (isEuro != other.isEuro) return false
+        if (isCustomSweep != other.isCustomSweep) return false
+        if (isLegacy != other.isLegacy) return false
+        if (isDisplayActive != other.isDisplayActive) return false
+        if (btIndicatorImage1 != other.btIndicatorImage1) return false
+        if (muteIndicatorImage1 != other.muteIndicatorImage1) return false
+        if (muteIndicatorImage2 != other.muteIndicatorImage2) return false
+        if (btIndicatorImage2 != other.btIndicatorImage2) return false
+        if (bogeyCounter7SegmentImage1 != other.bogeyCounter7SegmentImage1) return false
+        if (bogeyCounter7SegmentImage2 != other.bogeyCounter7SegmentImage2) return false
+        if (signalStrengthBarGraphImage != other.signalStrengthBarGraphImage) return false
+        if (bandArrowIndicatorImage1 != other.bandArrowIndicatorImage1) return false
+        if (bandArrowIndicatorImage2 != other.bandArrowIndicatorImage2) return false
+        if (aux0 != other.aux0) return false
+        if (aux1 != other.aux1) return false
+        if (aux2 != other.aux2) return false
+        if (mode != other.mode) return false
+        if (bogeyCounterMode != other.bogeyCounterMode) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = bytes.contentHashCode()
+        result = 31 * result + isSoft.hashCode()
+        result = 31 * result + isTimeSlicing.hashCode()
+        result = 31 * result + isSearchingForAlerts.hashCode()
+        result = 31 * result + isDisplayOn.hashCode()
+        result = 31 * result + isEuro.hashCode()
+        result = 31 * result + isCustomSweep.hashCode()
+        result = 31 * result + isLegacy.hashCode()
+        result = 31 * result + isDisplayActive.hashCode()
+        result = 31 * result + btIndicatorImage1.hashCode()
+        result = 31 * result + muteIndicatorImage1.hashCode()
+        result = 31 * result + muteIndicatorImage2.hashCode()
+        result = 31 * result + btIndicatorImage2.hashCode()
+        result = 31 * result + bogeyCounter7SegmentImage1.hashCode()
+        result = 31 * result + bogeyCounter7SegmentImage2.hashCode()
+        result = 31 * result + signalStrengthBarGraphImage.hashCode()
+        result = 31 * result + bandArrowIndicatorImage1.hashCode()
+        result = 31 * result + bandArrowIndicatorImage2.hashCode()
+        result = 31 * result + aux0.hashCode()
+        result = 31 * result + aux1.hashCode()
+        result = 31 * result + aux2.hashCode()
+        result = 31 * result + mode.hashCode()
+        result = 31 * result + bogeyCounterMode.hashCode()
+        return result
+    }
 }
 
 const val BOGEY_COUNTER_IMG_1_INDEX: Int = 0

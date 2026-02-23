@@ -6,7 +6,6 @@ import io.github.developrofthings.kespl.ESPResponse
 import io.github.developrofthings.kespl.EmptySuccessESPResponse
 import io.github.developrofthings.kespl.MutableESPFlowController
 import io.github.developrofthings.kespl.asFailure
-import io.github.developrofthings.kespl.asSuccess
 import io.github.developrofthings.kespl.bluetooth.ESPConnectionStatus
 import io.github.developrofthings.kespl.bluetooth.V1cType
 import io.github.developrofthings.kespl.bluetooth.V1connection
@@ -33,6 +32,9 @@ internal class FakeConnection(
 
     override val connectionStatus: StateFlow<ESPConnectionStatus>
         get() = flowController.connectionStatus
+
+    override val connectedDevice: StateFlow<V1connection?>
+        get() = TODO("Not yet implemented")
 
     override val espData: Flow<ByteArray>
         get() = flowController.espData

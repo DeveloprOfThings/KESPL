@@ -4,13 +4,11 @@
 package io.github.developrofthings.kespl.packet.data.user
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
-@JvmInline
 /**
  * Represents user configuration settings inside of a Tech display.
  */
-value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSettings {
+data class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSettings {
 
     /**
      * Returns the byte at the specified index in the user settings.
@@ -41,9 +39,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
      */
     val userByte5: UserByte5 get() = UserByte5(get(5))
 
-
-    @JvmInline
-    value class UserByte0(private val data: Byte) {
+        data class UserByte0(private val data: Byte) {
 
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
@@ -88,8 +84,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
         val bit7: Boolean get() = get(7)
     }
 
-    @JvmInline
-    value class UserByte1(private val data: Byte) {
+        data class UserByte1(private val data: Byte) {
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
         val bit0: Boolean get() = get(0)
@@ -130,8 +125,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
         val bit7: Boolean get() = get(7)
     }
 
-    @JvmInline
-    value class UserByte2(private val data: Byte) {
+        data class UserByte2(private val data: Byte) {
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
         /**
@@ -176,8 +170,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
 
     }
 
-    @JvmInline
-    value class UserByte3(private val data: Byte) {
+        data class UserByte3(private val data: Byte) {
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
         /**
@@ -221,8 +214,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
         val bit7: Boolean get() = get(7)
     }
 
-    @JvmInline
-    value class UserByte4(private val data: Byte) {
+        data class UserByte4(private val data: Byte) {
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
         /**
@@ -266,8 +258,7 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
         val bit7: Boolean get() = get(7)
     }
 
-    @JvmInline
-    value class UserByte5(private val data: Byte) {
+        data class UserByte5(private val data: Byte) {
         operator fun get(index: Int): Boolean = data.isBitSet(index = index)
 
         /**
@@ -309,5 +300,33 @@ value class TechDisplayUserSettings(override val userBytes: ByteArray) : UserSet
          * Unused; always 1.
          */
         val bit7: Boolean get() = get(7)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as TechDisplayUserSettings
+
+        if (!userBytes.contentEquals(other.userBytes)) return false
+        if (userByte0 != other.userByte0) return false
+        if (userByte1 != other.userByte1) return false
+        if (userByte2 != other.userByte2) return false
+        if (userByte3 != other.userByte3) return false
+        if (userByte4 != other.userByte4) return false
+        if (userByte5 != other.userByte5) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = userBytes.contentHashCode()
+        result = 31 * result + userByte0.hashCode()
+        result = 31 * result + userByte1.hashCode()
+        result = 31 * result + userByte2.hashCode()
+        result = 31 * result + userByte3.hashCode()
+        result = 31 * result + userByte4.hashCode()
+        result = 31 * result + userByte5.hashCode()
+        return result
     }
 }

@@ -568,7 +568,7 @@ internal class ESPClient(
             timeout = timeout,
         )
 
-        if (userBytesResult is ESPResponse.Failure) return userBytesResult
+        if (userBytesResult is ESPResponse.Failure) return ESPFailure.ESPOperationFailed.asFailure()
         // If the Legacy bit is set, this will always fail
         if (verifyBytes) {
             val readUserBytes = (userBytesResult as ESPResponse.Success)

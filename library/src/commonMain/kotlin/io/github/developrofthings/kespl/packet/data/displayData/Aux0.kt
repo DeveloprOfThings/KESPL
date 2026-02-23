@@ -3,7 +3,6 @@
 package io.github.developrofthings.kespl.packet.data.displayData
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * Aux0 Byte definition
@@ -22,8 +21,7 @@ import kotlin.jvm.JvmInline
  * Reference: Table 8.3 of the ESP Specification v. 3.013
  *
  */
-@JvmInline
-value class Aux0(private val data: Byte) {
+data class Aux0(private val data: Byte) {
     /**
      * Returns the bit at the specified index in the aux0 data.
      */

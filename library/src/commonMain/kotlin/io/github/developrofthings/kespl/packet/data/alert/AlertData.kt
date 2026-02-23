@@ -1,14 +1,11 @@
 package io.github.developrofthings.kespl.packet.data.alert
 
-import kotlin.jvm.JvmInline
-
 /**
  * This class represents the data for a single alert detected by a Valentine One..
  *
  * @property bytes The raw byte array containing the alert data.
  */
-@JvmInline
-value class AlertData(private val bytes: ByteArray) {
+data class AlertData(private val bytes: ByteArray) {
 
     /**
      * Returns the byte at the specified index in the alert data.
@@ -86,6 +83,44 @@ value class AlertData(private val bytes: ByteArray) {
             if (aux.photoRadarType != PhotoRadar.None) return AlertBand.Photo
         }
         return band
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as AlertData
+
+        if (!bytes.contentEquals(other.bytes)) return false
+        if (frequency != other.frequency) return false
+        if (frontSignalStrength != other.frontSignalStrength) return false
+        if (rearSignalStrength != other.rearSignalStrength) return false
+        if (isPriority != other.isPriority) return false
+        if (isJunk != other.isJunk) return false
+        if (alertIndexCount != other.alertIndexCount) return false
+        if (bandArrowDefinition != other.bandArrowDefinition) return false
+        if (aux != other.aux) return false
+        if (band != other.band) return false
+        if (arrow != other.arrow) return false
+        if (photoRadar != other.photoRadar) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = bytes.contentHashCode()
+        result = 31 * result + frequency
+        result = 31 * result + frontSignalStrength
+        result = 31 * result + rearSignalStrength
+        result = 31 * result + isPriority.hashCode()
+        result = 31 * result + isJunk.hashCode()
+        result = 31 * result + alertIndexCount.hashCode()
+        result = 31 * result + bandArrowDefinition.hashCode()
+        result = 31 * result + aux.hashCode()
+        result = 31 * result + band.hashCode()
+        result = 31 * result + arrow.hashCode()
+        result = 31 * result + photoRadar.hashCode()
+        return result
     }
 }
 

@@ -3,7 +3,6 @@
 package io.github.developrofthings.kespl.packet.data.alert
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * Auxiliary data for an alert.
@@ -26,8 +25,7 @@ import kotlin.jvm.JvmInline
  *
  * @property data The raw byte value containing the aux0 data.
  */
-@JvmInline
-value class Aux0(private val data: Byte) {
+data class Aux0(private val data: Byte) {
 
     /**
      * Returns the bit at the specified index in the aux0 data.

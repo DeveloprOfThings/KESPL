@@ -1,7 +1,6 @@
 package io.github.developrofthings.kespl.packet.data.displayData
 
 import io.github.developrofthings.kespl.utilities.extensions.primitive.isBitSet
-import kotlin.jvm.JvmInline
 
 /**
  * Aux2 – Current Volume
@@ -13,8 +12,7 @@ import kotlin.jvm.JvmInline
  * Reference: InfDisplayData packet description ESP Specification v. 3.012
  * @since V4.1028
  */
-@JvmInline
-value class Aux2(private val data: Byte) {
+data class Aux2(private val data: Byte) {
     /**
      * Returns the bit at the specified index in the aux2 data.
      */
