@@ -29,18 +29,16 @@ kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
-    androidLibrary {
+    android {
         namespace = "io.github.developrofthings.kespl"
         compileSdk = libs.versions.compileSDK.get().toInt()
         minSdk = libs.versions.minSDK.get().toInt()
 
         // Configure test that will run on JVM ie "unit test"
-        withHostTestBuilder {
+        withHostTest {
         }
 
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
+        withDeviceTest {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
@@ -55,7 +53,6 @@ kotlin {
 
     val xcf = XCFramework(xcFrameworkName = xcfName)
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -160,7 +157,6 @@ tasks.named("assemble${xcfName}XCFramework") {
 dependencies {
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)
     add("kspAndroid", libs.koin.ksp.compiler)
-    add("kspIosX64", libs.koin.ksp.compiler)
     add("kspIosArm64", libs.koin.ksp.compiler)
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
 }

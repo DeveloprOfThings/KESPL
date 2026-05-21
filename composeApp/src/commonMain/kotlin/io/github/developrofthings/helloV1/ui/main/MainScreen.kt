@@ -43,7 +43,7 @@ import io.github.developrofthings.helloV1.ui.log.ESPLogScreen
 import io.github.developrofthings.kespl.bluetooth.V1cType
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Serializable
 data object Main

@@ -22,13 +22,13 @@ kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
-    androidLibrary {
+    android {
         namespace = "io.github.developrofthings.kespl.callbacks"
         compileSdk = 36
         minSdk = 24
 
         // Configure test that will run on JVM ie "unit test"
-        withHostTestBuilder {}
+        withHostTest {}
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -37,7 +37,6 @@ kotlin {
 
     val xcf = XCFramework(xcFrameworkName = xcfName)
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->

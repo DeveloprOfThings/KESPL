@@ -38,7 +38,7 @@ import hellov1.composeapp.generated.resources.user_byte_undefined
 import hellov1.composeapp.generated.resources.write_to_v1
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun rememberUserByteState(

@@ -31,6 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":androidApp")
 include(":library")
 include(":callbacks")
 

@@ -19,7 +19,7 @@ import io.github.developrofthings.kespl.packet.data.displayData.SignalStrengthBa
 import hellov1.composeapp.generated.resources.Res
 import hellov1.composeapp.generated.resources.strength
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BarGraph(
