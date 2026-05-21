@@ -1,9 +1,9 @@
 package io.github.developrofthings.kespl.bluetooth.discovery.le
 
-import V1CONNECTION_LE_SERVICE_CBUUID
 import io.github.developrofthings.kespl.bluetooth.BTDevice
 import io.github.developrofthings.kespl.bluetooth.EspUUID
 import io.github.developrofthings.kespl.bluetooth.IOSBluetoothManager
+import io.github.developrofthings.kespl.bluetooth.V1CONNECTION_LE_SERVICE_CBUUID
 import io.github.developrofthings.kespl.bluetooth.V1cType
 import io.github.developrofthings.kespl.bluetooth.V1connection
 import io.github.developrofthings.kespl.bluetooth.V1connectionScanResult

@@ -1,11 +1,13 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-import io.github.developrofthings.kespl.bluetooth.EspUUID
+package io.github.developrofthings.kespl.bluetooth
+
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.allocArrayOf
 import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.refTo
 import kotlinx.cinterop.usePinned
 import platform.CoreBluetooth.CBUUID
 import platform.CoreBluetooth.CBUUID.Companion.UUIDWithString
@@ -13,7 +15,6 @@ import platform.Foundation.NSData
 import platform.Foundation.NSUUID
 import platform.Foundation.create
 import platform.posix.memcpy
-import toCBUUID
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -50,9 +51,10 @@ fun NSData.toByteArray(): ByteArray = ByteArray(length.toInt()).apply {
 
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 fun ByteArray.toNSData(): NSData {
-    return memScoped {
+    if (isEmpty()) return NSData()
+    return usePinned { pinned ->
         NSData.create(
-            bytes = allocArrayOf(this@toNSData),
+            bytes = pinned.addressOf(0),
             length = this@toNSData.size.toULong()
         )
     }

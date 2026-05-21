@@ -4,9 +4,7 @@ package io.github.developrofthings.kespl.bluetooth.connection.le
 
 import io.github.developrofthings.kespl.packet.toHexString
 import io.github.developrofthings.kespl.utilities.PlatformLogger
-import io.github.developrofthings.kespl.bluetooth.connection.le.filterForCharacteristic
-import io.github.developrofthings.kespl.bluetooth.connection.le.filterForCharacteristicWriteResponse
-import io.github.developrofthings.kespl.bluetooth.connection.le.isConnectionInterrupted
+import io.github.developrofthings.kespl.bluetooth.toNSData
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +22,6 @@ import kotlinx.coroutines.sync.withLock
 import platform.CoreBluetooth.CBCharacteristic
 import platform.CoreBluetooth.CBCharacteristicWriteWithoutResponse
 import platform.CoreBluetooth.CBPeripheral
-import toNSData
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.uuid.ExperimentalUuidApi

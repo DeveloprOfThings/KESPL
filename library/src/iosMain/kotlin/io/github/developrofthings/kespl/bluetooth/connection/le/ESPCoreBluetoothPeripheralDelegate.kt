@@ -1,5 +1,6 @@
 package io.github.developrofthings.kespl.bluetooth.connection.le
 
+import io.github.developrofthings.kespl.bluetooth.toByteArray
 import kotlinx.cinterop.ObjCSignatureOverride
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,7 +13,6 @@ import platform.CoreBluetooth.CBService
 import platform.Foundation.NSError
 import platform.Foundation.NSNumber
 import platform.darwin.NSObject
-import toByteArray
 
 internal class ESPCoreBluetoothPeripheralDelegate : NSObject(), CBPeripheralDelegateProtocol {
 
