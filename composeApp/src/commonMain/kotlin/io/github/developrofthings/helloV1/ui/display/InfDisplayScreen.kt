@@ -44,7 +44,7 @@ import hellov1.composeapp.generated.resources.ic_bluetooth
 import hellov1.composeapp.generated.resources.ic_mute
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable

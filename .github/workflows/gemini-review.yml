@@ -1,0 +1,37 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # Allows Gemini to post comments on your PR
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gemini PR Reviewer
+        uses: sshnaidm/gemini-code-review-action@v2
+        with:
+          gemini-key: ${{ secrets.GEMINI_API_KEY }}
+          model: "gemini-3.5-flash"
+          # Adding a custom prompt significantly improves quality
+          prompt: |
+            You are an expert Senior Mobile Engineer specializing in Compose Multiplatform (CMP) and Kotlin Multiplatform (KMP) architecture across Android and iOS. Review the provided git diff.
+            
+            1. Be critical but constructive. Focus heavily on severe logic bugs, security risks, memory leaks, and performance flaws (such as recomposition loops, missing `remember` blocks, or running blocking work inside Composables).
+            2. Understand KMP Source Sets: Ensure that code in `commonMain` is strictly cross-platform. Flag any accidental imports of Android-specific types (like `android.content.Context`, `Toast`, or Java standard libraries) inside common modules.
+            3. Idiomatic expect/actual: Verify that `expect`/`actual` patterns are used correctly and placed in the appropriate modules (`commonMain` vs `iosMain`/`androidMain`). Ensure that actual declarations completely satisfy the expected contract.
+            4. State & Lifecycle Management: Look out for multiplatform State handling. Ensure state hoisting is clean and multiplatform lifecycle components (like CMP-compatible ViewModels or state storage) follow structured concurrency patterns with Coroutines.
+            5. Cross-Platform UI Pitfalls: Look for issues specific to the CMP UI rendering target (such as missing platform-independent Resource handling like `Res`, unoptimized custom canvas drawing, or breaking layouts on iOS).
+            6. Do not invent bugs where there are none. If you are unsure about code logic due to missing context or missing file access in the diff, state that clearly instead of guessing or assuming a bug exists.
+            7. CRITICAL: Do NOT attempt to verify, check, or critique dependency library or Gradle plugin version numbers. You do not have internet access to verify them; completely ignore version updates unless the syntax is explicitly broken.
+            8. Only comment on lines that require fixes or optimizations. If code looks correct, do not leave a comment.
+            9. Be highly concise.

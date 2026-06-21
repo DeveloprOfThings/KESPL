@@ -1,16 +1,14 @@
 package io.github.developrofthings.kespl.bluetooth.connection.le
 
-import CLIENT_OUT_V1_IN_SHORT_CHARACTERISTIC_CBUUID
-import V1CONNECTION_LE_SERVICE_CBUUID
-import V1_OUT_CLIENT_IN_SHORT_CHARACTERISTIC_CBUUID
+import io.github.developrofthings.kespl.bluetooth.CLIENT_OUT_V1_IN_SHORT_CHARACTERISTIC_CBUUID
 import io.github.developrofthings.kespl.bluetooth.ESPConnectionStatus
 import io.github.developrofthings.kespl.bluetooth.EspUUID
 import io.github.developrofthings.kespl.bluetooth.IBluetoothManager
 import io.github.developrofthings.kespl.bluetooth.IOSBluetoothManager
+import io.github.developrofthings.kespl.bluetooth.V1CONNECTION_LE_SERVICE_CBUUID
+import io.github.developrofthings.kespl.bluetooth.V1_OUT_CLIENT_IN_SHORT_CHARACTERISTIC_CBUUID
 import io.github.developrofthings.kespl.bluetooth.V1connection
 import io.github.developrofthings.kespl.utilities.PlatformLogger
-import io.github.developrofthings.kespl.bluetooth.connection.le.filterForPeripheral
-import io.github.developrofthings.kespl.bluetooth.connection.le.getV1connectionLeService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

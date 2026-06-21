@@ -32,7 +32,7 @@ import hellov1.composeapp.generated.resources.upper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import kotlin.experimental.or
 
 @Composable

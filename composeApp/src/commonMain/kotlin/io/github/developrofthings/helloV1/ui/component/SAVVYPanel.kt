@@ -30,7 +30,7 @@ import hellov1.composeapp.generated.resources.override_thumbwheel
 import hellov1.composeapp.generated.resources.request_savvy_status
 import hellov1.composeapp.generated.resources.savvy
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SAVVYPanel(

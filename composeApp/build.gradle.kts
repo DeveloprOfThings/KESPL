@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
@@ -17,7 +17,15 @@ skie {
 }
 
 kotlin {
-    androidTarget {
+    android {
+        namespace = "io.github.developrofthings.helloV1.shared"
+        compileSdk = libs.versions.compileSDK.get().toInt()
+        minSdk = libs.versions.minSDK.get().toInt()
+
+        androidResources {
+            enable = true
+        }
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -25,7 +33,6 @@ kotlin {
 
     val xcfName = "ComposeAppKit"
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -39,15 +46,12 @@ kotlin {
     }
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.core.splashscreen)
-        }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+            implementation(libs.ui.tooling.preview)
             implementation(libs.compose.component.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
@@ -91,33 +95,6 @@ tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMet
     .configureEach {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-
-android {
-    namespace = "io.github.developrofthings.helloV1"
-    compileSdk = libs.versions.compileSDK.get().toInt()
-
-    defaultConfig {
-        namespace = "io.github.developrofthings.helloV1"
-        minSdk = libs.versions.minSDK.get().toInt()
-        targetSdk = libs.versions.targetSDK.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
 
 tasks.withType<Test> {
     useJUnitPlatform()

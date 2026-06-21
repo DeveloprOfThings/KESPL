@@ -33,7 +33,7 @@ import hellov1.composeapp.generated.resources.scan_for_v1c
 import hellov1.composeapp.generated.resources.scan_for_v1connection_s
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 private val amberColor = Color(0xFFFFBF00)
 private fun ESPConnectionStatus.toColor() = when (this) {

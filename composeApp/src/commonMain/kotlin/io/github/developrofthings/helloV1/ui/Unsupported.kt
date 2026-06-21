@@ -24,7 +24,7 @@ import hellov1.composeapp.generated.resources.ic_block
 import hellov1.composeapp.generated.resources.ic_bluetooth
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Serializable
 data object Unsupported

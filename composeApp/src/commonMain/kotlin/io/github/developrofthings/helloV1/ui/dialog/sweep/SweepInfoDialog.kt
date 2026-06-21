@@ -48,7 +48,7 @@ import hellov1.composeapp.generated.resources.sweep_sections
 import hellov1.composeapp.generated.resources.write
 import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
