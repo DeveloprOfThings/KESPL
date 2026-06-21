@@ -5,9 +5,6 @@ package io.github.developrofthings.kespl.bluetooth
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
-import kotlinx.cinterop.allocArrayOf
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.refTo
 import kotlinx.cinterop.usePinned
 import platform.CoreBluetooth.CBUUID
 import platform.CoreBluetooth.CBUUID.Companion.UUIDWithString
